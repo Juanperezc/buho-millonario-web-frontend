@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -12,17 +12,21 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Copyright } from "@components/Copyright/Copyright";
 import { useAppDispatch, useAppSelector } from "@app/hooks";
-import { userLogin } from "@features/user/userActions";
+import { userLoginAction } from "@features/user/userActions";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import {
   EMAIL_REQUIRED_YUP,
+  PASSWORD_MAX_YUP,
+  PASSWORD_MIN_YUP,
   PASSWORD_REQUIRED_YUP,
 } from "shared/constants/yup.constants";
 import { swalClose, swalLoading } from "@utils/swal.util";
 import { toastError } from "@utils/toast.util";
 import { useNavigate } from "react-router-dom";
+import { useMemo } from "react";
+
 
 const theme = createTheme();
 
@@ -37,15 +41,19 @@ const schema = yup
     password: yup
       .string()
       .required(PASSWORD_REQUIRED_YUP)
-      .min(8, "El campo permite mínimo 8 caracteres")
-      .max(16, "El campo permite máximo 16 caracteres"),
+      .min(8, PASSWORD_MIN_YUP)
+      .max(16, PASSWORD_MAX_YUP),
   })
   .required();
 
 export default function SignIn() {
-  const { loading, error, success } = useAppSelector((state) => state.user);
+  const { loading, error, success, userInfo } = useAppSelector(
+    (state) => state.user
+  );
   const dispatch = useAppDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlError = urlParams.get("error");
   const {
     register,
     handleSubmit,
@@ -54,23 +62,32 @@ export default function SignIn() {
     resolver: yupResolver(schema),
   });
 
+  // check param error from url
+
+  useMemo(() => {
+    console.log('urlError',urlError)
+    if (urlError != null) {
+      toastError("No estas autorizado para realizar esta operación");
+    }
+  }, [urlError]);
+
   const onSubmit = (data: IFormInputs) => {
-    dispatch(userLogin(data));
+    dispatch(userLoginAction(data));
   };
 
-  useMemo(() => {
-    if (success){
-      navigate("/dashboard/home")
+  useEffect(() => {
+    if (success && userInfo) {
+      navigate("/dashboard/home");
     }
-  }, [success]);
+  }, [success, userInfo]);
 
-  useMemo(() => {
-    if (error == "Unauthorized") {
-      toastError("Email o usuario incorrecto");
+  useEffect(() => {
+    if (error === "Unauthorized") {
+      toastError("Email o contraseña incorrecto");
     }
   }, [error]);
 
-  useMemo(() => {
+  useEffect(() => {
     if (loading) swalLoading();
     else swalClose();
   }, [loading]);
@@ -132,14 +149,14 @@ export default function SignIn() {
               Login
             </Button>
             <Grid container>
-              {/*< Grid item xs>
+              <Grid item xs>
                 <Link href="#" variant="body2">
-                  Forgot password?
+                  Recuperar contraseña
                 </Link>
-              </Grid> */}
+              </Grid>
               <Grid item>
                 <Link href="sign-up" variant="body2">
-                  No tienes cuenta? Regístrate
+                  ¿No tienes cuenta? Regístrate
                 </Link>
               </Grid>
             </Grid>

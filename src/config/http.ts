@@ -1,6 +1,5 @@
 import { toastError } from "@utils/toast.util";
 import axios from "axios";
-import { toast } from "react-toastify";
 
 export const axiosInstance = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
@@ -8,11 +7,10 @@ export const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   async (config: any) => {
-    //  const token = # Your token goes over here;
-    //  if (token) {
-    //  config.headers.accessToken = token;
-    // }
-
+    const token = localStorage.getItem("userToken");
+    if (token) {
+      config.headers["Authorization"] = "Bearer " + token;
+    }
     config.headers["Content-Type"] = "application/json";
     return config;
   },
@@ -31,6 +29,11 @@ axiosInstance.interceptors.response.use(
       error.response.data.message.forEach((message: string) => {
         toastError(message);
       });
+    }
+    if (error.response.status === 401) {
+      localStorage.removeItem("userToken");
+      window.location.href = "/sign-in?error=unauthorized";
+
     }
     return Promise.reject(error);
   }

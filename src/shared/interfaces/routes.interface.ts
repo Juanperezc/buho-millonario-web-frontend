@@ -1,6 +1,6 @@
 
 export interface ProtectedRouteInterface {
-    userInfo: any;
+    userToken: string | null;
     redirectPath?: string;
     children: JSX.Element;
   }

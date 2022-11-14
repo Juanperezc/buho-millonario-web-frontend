@@ -1,17 +1,25 @@
-import { useAppSelector } from "@app/hooks";
+import { useAppDispatch, useAppSelector } from "@app/hooks";
+import DashboardLayout from "@components/Layouts/DashboardLayout";
+import NoAuthLayout from "@components/Layouts/NoAuthLayout";
+import { getProfileAction } from "@features/user/userActions";
 import Home from "@pages/Dashboard/Home";
 import SignIn from "@pages/SignIn/SignIn";
 import SignUp from "@pages/SignUp/SignUp";
+import { useEffect } from "react";
 import {
   createBrowserRouter,
   Navigate,
   RouterProvider,
 } from "react-router-dom";
-import { ProtectedRoute } from "shared/guards/routes.guard";
-
 function App() {
-  const { userInfo } = useAppSelector((state) => state.user);
-
+  const { userToken } = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    if (userToken) {
+      console.log("userToken", userToken);
+      dispatch(getProfileAction());
+    }
+  }, []);
   const router = createBrowserRouter([
     {
       path: "*",
@@ -23,18 +31,26 @@ function App() {
     },
     {
       path: "/sign-up",
-      element: <SignUp />,
+      element: (
+        <NoAuthLayout userToken={userToken}>
+          <SignUp />
+        </NoAuthLayout>
+      ),
     },
     {
       path: "/dashboard",
       children: [
         {
           path: "*",
-          element: <Navigate to="/dashboard/home" replace />,
+          element: <Navigate to="home" replace />,
         },
         {
           path: "home",
-          element: ProtectedRoute({ userInfo, children: <Home /> }),
+          element: (
+            <DashboardLayout userToken={userToken}>
+              <Home />
+            </DashboardLayout>
+          ),
         },
       ],
     },

@@ -1,10 +1,8 @@
-import { useMemo } from "react";
+import { useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -13,7 +11,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Copyright } from "@components/Copyright/Copyright";
-import { registerUser } from "@features/user/userActions";
+import { registerUserAction } from "@features/user/userActions";
 import { useAppDispatch, useAppSelector } from "@app/hooks";
 import { useNavigate } from "react-router";
 import { swalClose, swalLoading } from "@utils/swal.util";
@@ -65,19 +63,19 @@ export default function SignUp() {
     resolver: yupResolver(schema),
   });
 
-  useMemo(() => {
-    if (success) {
+  useEffect(() => {
+    if (success && userInfo) {
       navigate("/dashboard/home");
     }
-  }, [success]);
+  }, [success, userInfo]);
 
-  useMemo(() => {
+  useEffect(() => {
     if (loading) swalLoading();
     else swalClose();
   }, [loading]);
 
   const onSubmit = (data: IFormInputs) => {
-    dispatch(registerUser(data));
+    dispatch(registerUserAction(data));
   };
 
   return (
