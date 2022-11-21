@@ -27,7 +27,6 @@ import { toastError } from "@utils/toast.util";
 import { useNavigate } from "react-router-dom";
 import { useMemo } from "react";
 
-
 const theme = createTheme();
 
 interface IFormInputs {
@@ -65,7 +64,6 @@ export default function SignIn() {
   // check param error from url
 
   useMemo(() => {
-    console.log('urlError',urlError)
     if (urlError != null) {
       toastError("No estas autorizado para realizar esta operación");
     }
@@ -77,6 +75,7 @@ export default function SignIn() {
 
   useEffect(() => {
     if (success && userInfo) {
+      swalClose();
       navigate("/dashboard/home");
     }
   }, [success, userInfo]);
@@ -89,7 +88,6 @@ export default function SignIn() {
 
   useEffect(() => {
     if (loading) swalLoading();
-    else swalClose();
   }, [loading]);
 
   return (

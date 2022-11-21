@@ -14,10 +14,19 @@ export const swalClose = () => {
   Swal.close();
 };
 
-export const swalError = (title: string, text: string) => {
+export const swalError = (title: string, text?: string) => {
   Swal.fire({
     icon: "error",
     title: title,
-    text: text,
+    text: text ?? "",
   });
 };
+
+
+export const swalSuccess = (title: string, text?: string) => {
+  Swal.fire({
+    icon: "success",
+    title: title ?? "Éxito",
+    text: text ?? "",
+  });
+}

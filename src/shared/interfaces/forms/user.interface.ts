@@ -1,11 +1,23 @@
 export interface SignUpUserInterface {
-  email: string;
-  password: string;
   firstName: string;
   lastName: string;
+  parishId: string | number;
+  dni: string;
+  birthDate: Date;
+  email: string;
+  password: string;
 }
 
 export interface SignInUserInterface {
   email: string;
   password: string;
+}
+
+export interface UpdateProfileInterface {
+  firstName: string;
+  lastName: string;
+  parishId: string | number;
+  birthDate: Date;
+  phone: string;
+  address: string;
 }

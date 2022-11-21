@@ -15,9 +15,10 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 
 import { Copyright } from "@components/Copyright/Copyright";
-import { MenuListPrimary, MenuListSecondary } from "./Menu/MenuList";
+import { MenuListPrimary } from "./Menu/MenuList";
 import LogoutOption from "./ToolbarHeader/LogoutOption";
 import { Navigate } from "react-router-dom";
+import { Card, CardContent, CardHeader } from "@mui/material";
 
 const drawerWidth: number = 240;
 
@@ -71,18 +72,20 @@ const Drawer = styled(MuiDrawer, {
 
 const mdTheme = createTheme();
 interface DashBoardLayoutProps {
+  title: string
   children: JSX.Element;
   userToken: string | null;
 }
-export default function DashboardLayout({ children, userToken }: DashBoardLayoutProps) {
+export default function DashboardLayout({
+  title,
+  children,
+  userToken,
+}: DashBoardLayoutProps) {
   const [open, setOpen] = React.useState(true);
 
-  
   const toggleDrawer = () => {
     setOpen(!open);
   };
-
-
 
   if (!userToken) {
     return <Navigate to={"/sign-in"} replace />;
@@ -117,7 +120,7 @@ export default function DashboardLayout({ children, userToken }: DashBoardLayout
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Dashboard
+              Saldo: 0.00 Bs
             </Typography>
             <LogoutOption />
           </Toolbar>
@@ -138,8 +141,8 @@ export default function DashboardLayout({ children, userToken }: DashBoardLayout
           <Divider />
           <List component="nav">
             {MenuListPrimary}
-            <Divider sx={{ my: 1 }} />
-            {MenuListSecondary}
+            {/*       <Divider sx={{ my: 1 }} /> */}
+            {/*   {MenuListSecondary} */}
           </List>
         </Drawer>
         <Box
@@ -159,7 +162,13 @@ export default function DashboardLayout({ children, userToken }: DashBoardLayout
             {
               // Body
             }
-            {children}
+            <Card>
+              <CardHeader
+                title={title}
+              />
+              <CardContent>{children}</CardContent>
+            </Card>
+
             {
               // footer
             }

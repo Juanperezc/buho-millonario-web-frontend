@@ -13,6 +13,12 @@ export default function LogoutOption() {
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
+
+  const navigateToProfile = () => {
+    navigate("/dashboard/profile");
+    handleClose();
+  };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -44,7 +50,7 @@ export default function LogoutOption() {
           "aria-labelledby": "basic-button",
         }}
       >
-        <MenuItem onClick={handleClose}>Perfil</MenuItem>
+        <MenuItem onClick={navigateToProfile}>Perfil</MenuItem>
         <MenuItem onClick={handleLogout}>Cerrar sesión</MenuItem>
       </Menu>
     </>

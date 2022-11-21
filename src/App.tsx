@@ -2,21 +2,28 @@ import { useAppDispatch, useAppSelector } from "@app/hooks";
 import DashboardLayout from "@components/Layouts/DashboardLayout";
 import NoAuthLayout from "@components/Layouts/NoAuthLayout";
 import { getProfileAction } from "@features/user/userActions";
+import { LocalizationProvider } from "@mui/x-date-pickers";
 import Home from "@pages/Dashboard/Home";
 import SignIn from "@pages/SignIn/SignIn";
 import SignUp from "@pages/SignUp/SignUp";
 import { useEffect } from "react";
+import { QueryClient, QueryClientProvider } from "react-query";
 import {
   createBrowserRouter,
   Navigate,
   RouterProvider,
 } from "react-router-dom";
+
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import Profile from "@pages/Dashboard/Profile";
+import MyTickets from "@pages/Dashboard/MyTickets";
+
 function App() {
+  const queryClient = new QueryClient();
   const { userToken } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   useEffect(() => {
     if (userToken) {
-      console.log("userToken", userToken);
       dispatch(getProfileAction());
     }
   }, []);
@@ -27,7 +34,11 @@ function App() {
     },
     {
       path: "/sign-in",
-      element: <SignIn />,
+      element: (
+        <NoAuthLayout userToken={userToken}>
+          <SignIn />
+        </NoAuthLayout>
+      ),
     },
     {
       path: "/sign-up",
@@ -47,8 +58,24 @@ function App() {
         {
           path: "home",
           element: (
-            <DashboardLayout userToken={userToken}>
+            <DashboardLayout title="Inicio" userToken={userToken}>
               <Home />
+            </DashboardLayout>
+          ),
+        },
+        {
+          path: "profile",
+          element: (
+            <DashboardLayout title="Mi perfil" userToken={userToken}>
+              <Profile />
+            </DashboardLayout>
+          ),
+        },
+        {
+          path: "tickets",
+          element: (
+            <DashboardLayout title="Mis tickets" userToken={userToken}>
+              <MyTickets />
             </DashboardLayout>
           ),
         },
@@ -56,7 +83,13 @@ function App() {
     },
   ]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <QueryClientProvider client={queryClient} contextSharing={true}>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <RouterProvider router={router} />
+      </LocalizationProvider>
+    </QueryClientProvider>
+  );
 }
 
 export default App;

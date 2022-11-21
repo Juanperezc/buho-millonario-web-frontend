@@ -23,7 +23,7 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   function (error) {
-    console.log("error", error);
+    console.error("error", error);
     if (error.response.status === 400) {
       // iterate response.data.message and show it in a toast
       error.response.data.message.forEach((message: string) => {

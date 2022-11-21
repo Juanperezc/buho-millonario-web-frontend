@@ -1,10 +1,6 @@
 import { useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
@@ -15,26 +11,29 @@ import { registerUserAction } from "@features/user/userActions";
 import { useAppDispatch, useAppSelector } from "@app/hooks";
 import { useNavigate } from "react-router";
 import { swalClose, swalLoading } from "@utils/swal.util";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
 import {
+  BIRTH_DATE_REQUIRED_YUP,
+  DNI_REQUIRED_YUP,
   EMAIL_REQUIRED_YUP,
   FIRST_NAME_REQUIRED_YUP,
   LAST_NAME_REQUIRED_YUP,
+  MUNICIPALITY_REQUIRED_YUP,
+  PARISH_REQUIRED_YUP,
   PASSWORD_MAX_YUP,
   PASSWORD_MIN_YUP,
   PASSWORD_REQUIRED_YUP,
+  STATE_REQUIRED_YUP,
 } from "@constants/yup.constants";
 import * as yup from "yup";
+import UserForm, {
+  IFormValueInterface,
+} from "@components/Forms/UserForm/UserForm";
+import { SignUpUserInterface } from "@interfaces/forms/user.interface";
+import _ from "lodash";
+import dayjs from "dayjs";
+import { Grid, Link } from "@mui/material";
 
 const theme = createTheme();
-
-interface IFormInputs {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-}
 
 const schema = yup
   .object({
@@ -46,23 +45,18 @@ const schema = yup
       .required(PASSWORD_REQUIRED_YUP)
       .min(8, PASSWORD_MIN_YUP)
       .max(16, PASSWORD_MAX_YUP),
+    state: yup.mixed().required(STATE_REQUIRED_YUP),
+    municipality: yup.mixed().required(MUNICIPALITY_REQUIRED_YUP),
+    parish: yup.mixed().required(PARISH_REQUIRED_YUP),
+    birthDate: yup.date().required(BIRTH_DATE_REQUIRED_YUP).nullable(),
+    dni: yup.string().required(DNI_REQUIRED_YUP),
   })
   .required();
 
-export default function SignUp() {
-  const { loading, userInfo, error, success } = useAppSelector(
-    (state) => state.user
-  );
+export default function SignUp(): JSX.Element {
+  const { loading, userInfo, success } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<IFormInputs>({
-    resolver: yupResolver(schema),
-  });
-
   useEffect(() => {
     if (success && userInfo) {
       navigate("/dashboard/home");
@@ -74,8 +68,17 @@ export default function SignUp() {
     else swalClose();
   }, [loading]);
 
-  const onSubmit = (data: IFormInputs) => {
-    dispatch(registerUserAction(data));
+  const onSubmit = (data: IFormValueInterface) => {
+    const httpParam: SignUpUserInterface = {
+      parishId: data.parish?.value ?? 1,
+      birthDate: dayjs(data.birthDate).toDate(),
+      dni: data.dni,
+      email: data.email,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      password: data.password,
+    };
+    dispatch(registerUserAction(httpParam));
   };
 
   return (
@@ -96,81 +99,20 @@ export default function SignUp() {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <Box
-            component="form"
-            noValidate
-            onSubmit={handleSubmit(onSubmit)}
-            sx={{ mt: 3 }}
-          >
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  {...register("firstName")}
-                  autoComplete="given-name"
-                  name="firstName"
-                  error={!!errors.firstName}
-                  helperText={errors.firstName?.message}
-                  fullWidth
-                  id="firstName"
-                  label="Nombre completo"
-                  autoFocus
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  {...register("lastName")}
-                  error={!!errors.lastName}
-                  helperText={errors.lastName?.message}
-                  fullWidth
-                  id="lastName"
-                  label="Apellidos"
-                  name="lastName"
-                  autoComplete="family-name"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  {...register("email")}
-                  error={!!errors.email}
-                  helperText={errors.email?.message}
-                  fullWidth
-                  id="email"
-                  label="Email"
-                  name="email"
-                  autoComplete="email"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  {...register("password")}
-                  error={!!errors.password}
-                  helperText={errors.password?.message}
-                  fullWidth
-                  name="password"
-                  label="Contraseña"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
-                />
-              </Grid>
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Registrarse
-            </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link href="#" variant="body2">
-                  ¿Ya tienes cuenta? Inicia sesión
-                </Link>
-              </Grid>
-            </Grid>
-          </Box>
+          <UserForm
+            submitText="Registrarse"
+            schema={schema}
+            onSubmit={onSubmit}
+            visibility={{ address: false, phone: false }}
+          />
         </Box>
+        <Grid container>
+          <Grid item xs={12} className="text-center">
+            <Link href="sign-in" variant="body2">
+              ¿Tienes cuenta? Inicia sesión
+            </Link>
+          </Grid>
+        </Grid>
         <Copyright sx={{ mt: 5 }} />
       </Container>
     </ThemeProvider>
