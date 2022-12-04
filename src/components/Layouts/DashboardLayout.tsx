@@ -1,5 +1,5 @@
 import * as React from "react";
-import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiDrawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
@@ -15,10 +15,11 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 
 import { Copyright } from "@components/Copyright/Copyright";
-import { MenuListPrimary } from "./Menu/MenuList";
 import LogoutOption from "./ToolbarHeader/LogoutOption";
 import { Navigate } from "react-router-dom";
 import { Card, CardContent, CardHeader } from "@mui/material";
+import { useAppSelector } from "@app/hooks";
+import MenuListPrimary from "./Menu/MenuList";
 
 const drawerWidth: number = 240;
 
@@ -70,9 +71,8 @@ const Drawer = styled(MuiDrawer, {
   },
 }));
 
-const mdTheme = createTheme();
 interface DashBoardLayoutProps {
-  title: string
+  title: string;
   children: JSX.Element;
   userToken: string | null;
 }
@@ -83,6 +83,8 @@ export default function DashboardLayout({
 }: DashBoardLayoutProps) {
   const [open, setOpen] = React.useState(true);
 
+  const { userInfo } = useAppSelector((state) => state.user);
+
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -92,90 +94,87 @@ export default function DashboardLayout({
   }
 
   return (
-    <ThemeProvider theme={mdTheme}>
-      <Box sx={{ display: "flex" }}>
-        <CssBaseline />
-        <AppBar position="absolute" open={open}>
-          <Toolbar
-            sx={{
-              pr: "24px", // keep right padding when drawer closed
-            }}
-          >
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              onClick={toggleDrawer}
-              sx={{
-                marginRight: "36px",
-                ...(open && { display: "none" }),
-              }}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography
-              component="h1"
-              variant="h6"
-              color="inherit"
-              noWrap
-              sx={{ flexGrow: 1 }}
-            >
-              Saldo: 0.00 Bs
-            </Typography>
-            <LogoutOption />
-          </Toolbar>
-        </AppBar>
-        <Drawer variant="permanent" open={open}>
-          <Toolbar
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "flex-end",
-              px: [1],
-            }}
-          >
-            <IconButton onClick={toggleDrawer}>
-              <ChevronLeftIcon />
-            </IconButton>
-          </Toolbar>
-          <Divider />
-          <List component="nav">
-            {MenuListPrimary}
-            {/*       <Divider sx={{ my: 1 }} /> */}
-            {/*   {MenuListSecondary} */}
-          </List>
-        </Drawer>
-        <Box
-          component="main"
+    <Box sx={{ display: "flex" }}>
+      <CssBaseline />
+      <AppBar position="absolute" open={open}>
+        <Toolbar
           sx={{
-            backgroundColor: (theme) =>
-              theme.palette.mode === "light"
-                ? theme.palette.grey[100]
-                : theme.palette.grey[900],
-            flexGrow: 1,
-            height: "100vh",
-            overflow: "auto",
+            pr: "24px", // keep right padding when drawer closed
           }}
         >
-          <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            {
-              // Body
-            }
-            <Card>
-              <CardHeader
-                title={title}
-              />
-              <CardContent>{children}</CardContent>
-            </Card>
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="open drawer"
+            onClick={toggleDrawer}
+            sx={{
+              marginRight: "36px",
+              ...(open && { display: "none" }),
+            }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography
+            component="h1"
+            variant="h6"
+            color="inherit"
+            noWrap
+            sx={{ flexGrow: 1 }}
+          >
+            Saldo: 0.00 Bs
+          </Typography>
+          <LogoutOption />
+        </Toolbar>
+      </AppBar>
+      <Drawer variant="permanent" open={open}>
+        <Toolbar
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "flex-end",
+            px: [1],
+          }}
+        >
+          <img className="w-28 h-15 mx-auto" src="/buho_logo_negro.png" />
+          <IconButton onClick={toggleDrawer}>
+            <ChevronLeftIcon />
+          </IconButton>
+        </Toolbar>
+        <Divider />
+        <List component="nav">
+          {<MenuListPrimary role={userInfo?.role} />}
+          {/*       <Divider sx={{ my: 1 }} /> */}
+          {/*   {MenuListSecondary} */}
+        </List>
+      </Drawer>
+      <Box
+        component="main"
+        sx={{
+          backgroundColor: (theme) =>
+            theme.palette.mode === "light"
+              ? theme.palette.grey[100]
+              : theme.palette.grey[900],
+          flexGrow: 1,
+          height: "100vh",
+          overflow: "auto",
+        }}
+      >
+        <Toolbar />
+        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+          {
+            // Body
+          }
+          <Card>
+            <CardHeader title={title} />
+            <CardContent>{children}</CardContent>
+          </Card>
 
-            {
-              // footer
-            }
-            <Copyright />
-          </Container>
-        </Box>
+          {
+            // footer
+          }
+          <Copyright />
+        </Container>
       </Box>
-    </ThemeProvider>
+    </Box>
   );
 }

@@ -39,7 +39,7 @@ export default function LogoutOption() {
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
       >
-        <AccountCircleIcon fontSize="large" />
+        <AccountCircleIcon className="text-white" fontSize="large" />
       </IconButton>
       <Menu
         id="basic-menu"

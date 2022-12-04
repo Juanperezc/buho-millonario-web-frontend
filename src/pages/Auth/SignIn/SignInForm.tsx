@@ -1,15 +1,12 @@
 import { useEffect } from "react";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Copyright } from "@components/Copyright/Copyright";
 import { useAppDispatch, useAppSelector } from "@app/hooks";
 import { userLoginAction } from "@features/user/userActions";
@@ -27,7 +24,7 @@ import { toastError } from "@utils/toast.util";
 import { useNavigate } from "react-router-dom";
 import { useMemo } from "react";
 
-const theme = createTheme();
+
 
 interface IFormInputs {
   email: string;
@@ -45,7 +42,7 @@ const schema = yup
   })
   .required();
 
-export default function SignIn() {
+export default function SignInForm() {
   const { loading, error, success, userInfo } = useAppSelector(
     (state) => state.user
   );
@@ -84,6 +81,7 @@ export default function SignIn() {
     if (error === "Unauthorized") {
       toastError("Email o contraseña incorrecto");
     }
+    swalClose();
   }, [error]);
 
   useEffect(() => {
@@ -91,7 +89,6 @@ export default function SignIn() {
   }, [loading]);
 
   return (
-    <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -102,11 +99,8 @@ export default function SignIn() {
             alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
-          </Avatar>
           <Typography component="h1" variant="h5">
-            Login
+            Bienvenido
           </Typography>
           <Box
             component="form"
@@ -144,11 +138,11 @@ export default function SignIn() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Login
+              Iniciar sesión
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
+                <Link href="forgot-password" variant="body2">
                   Recuperar contraseña
                 </Link>
               </Grid>
@@ -162,6 +156,6 @@ export default function SignIn() {
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
-    </ThemeProvider>
+
   );
 }

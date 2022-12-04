@@ -13,6 +13,19 @@ export interface SignInUserInterface {
   password: string;
 }
 
+export interface ForgotPasswordInterface {
+ email: string;
+}
+
+export interface ResetPasswordInterface {
+  password: string;
+  token: string;
+}
+
+export interface CloseAccountInterface {
+  closeReason: string;
+}
+
 export interface UpdateProfileInterface {
   firstName: string;
   lastName: string;

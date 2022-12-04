@@ -5,7 +5,6 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Copyright } from "@components/Copyright/Copyright";
 import { registerUserAction } from "@features/user/userActions";
 import { useAppDispatch, useAppSelector } from "@app/hooks";
@@ -33,7 +32,6 @@ import _ from "lodash";
 import dayjs from "dayjs";
 import { Grid, Link } from "@mui/material";
 
-const theme = createTheme();
 
 const schema = yup
   .object({
@@ -53,7 +51,7 @@ const schema = yup
   })
   .required();
 
-export default function SignUp(): JSX.Element {
+export default function SignUpForm(): JSX.Element {
   const { loading, userInfo, success } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -82,7 +80,7 @@ export default function SignUp(): JSX.Element {
   };
 
   return (
-    <ThemeProvider theme={theme}>
+  
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -93,11 +91,8 @@ export default function SignUp(): JSX.Element {
             alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
-          </Avatar>
           <Typography component="h1" variant="h5">
-            Sign up
+           Registro
           </Typography>
           <UserForm
             submitText="Registrarse"
@@ -115,6 +110,6 @@ export default function SignUp(): JSX.Element {
         </Grid>
         <Copyright sx={{ mt: 5 }} />
       </Container>
-    </ThemeProvider>
+
   );
 }

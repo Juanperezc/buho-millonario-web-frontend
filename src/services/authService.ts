@@ -1,4 +1,7 @@
 import {
+  CloseAccountInterface,
+  ForgotPasswordInterface,
+  ResetPasswordInterface,
   SignInUserInterface,
   SignUpUserInterface,
   UpdateProfileInterface,
@@ -20,15 +23,33 @@ export const signIn = <T>(data: SignInUserInterface) => {
 };
 
 export const getProfile = <T>() => {
-  return axiosInstance.get<T>(
-    process.env.REACT_APP_BASE_URL + "/auth/profile"
-  );
+  return axiosInstance.get<T>(process.env.REACT_APP_BASE_URL + "/auth/profile");
 };
-
 
 export const updateProfile = <T>(data: UpdateProfileInterface) => {
   return axiosInstance.put<T>(
     process.env.REACT_APP_BASE_URL + "/auth/profile",
+    data
+  );
+};
+
+export const forgotPassword = <T>(data: ForgotPasswordInterface) => {
+  return axiosInstance.post<T>(
+    process.env.REACT_APP_BASE_URL + "/auth/forgot-password",
+    data
+  );
+};
+
+export const resetPassword = <T>(data: ResetPasswordInterface) => {
+  return axiosInstance.post<T>(
+    process.env.REACT_APP_BASE_URL + "/auth/reset-password",
+    data
+  );
+};
+
+export const closeMyAccount = <T>(data: CloseAccountInterface) => {
+  return axiosInstance.post<T>(
+    process.env.REACT_APP_BASE_URL + "/auth/close-account",
     data
   );
 };

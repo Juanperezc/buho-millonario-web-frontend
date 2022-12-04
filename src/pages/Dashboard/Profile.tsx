@@ -21,12 +21,12 @@ import { Box } from "@mui/system";
 import UserForm, {
   IFormValueInterface,
 } from "@components/Forms/UserForm/UserForm";
-import { LinearProgress } from "@mui/material";
+import { Button, Divider, Grid, LinearProgress } from "@mui/material";
 import {
   updateProfileAction,
   updateProfileType,
 } from "@features/user/userActions";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   swalClose,
   swalError,
@@ -36,6 +36,7 @@ import {
 import { isString } from "lodash";
 import { UpdateProfileInterface } from "@interfaces/forms/user.interface";
 import dayjs from "dayjs";
+import CloseReasonDialog from "@components/Forms/UserForm/CloseReasonDialog";
 
 const schema = yup
   .object({
@@ -57,7 +58,8 @@ const Profile = (): JSX.Element => {
     (state) => state.user
   );
 
-  console.log(loading, userInfo);
+  const [openCloseDialog, setOpenCloseDialog] = useState(false);
+
   const dispatch = useAppDispatch();
 
   const defaultValues = {
@@ -68,18 +70,33 @@ const Profile = (): JSX.Element => {
     phone: userInfo?.phone,
     address: userInfo?.address,
     birthDate: userInfo?.birthDate,
+    state: userInfo?.parish
+      ? {
+          label: userInfo?.parish.municipality.state.name,
+          value: userInfo?.parish.municipality.state.id,
+        }
+      : null,
+    municipality: userInfo?.parish
+      ? {
+          label: userInfo?.parish.municipality.name,
+          value: userInfo?.parish.municipality.id,
+        }
+      : null,
+    parish: userInfo?.parish
+      ? { label: userInfo?.parish.name, value: userInfo?.parish.id }
+      : null,
   };
 
   useEffect(() => {
-    if (success && lastAction == updateProfileType)
+    if (success && lastAction == updateProfileType) {
+      console.log("yes");
       swalSuccess("Perfil actualizado correctamente");
-  }, [success]);
+    }
+  }, [success, lastAction]);
 
   useEffect(() => {
-    if (loading && lastAction == updateProfileType) {
+    if (loading && lastAction == updateProfileType && !success) {
       swalLoading();
-    } else {
-      swalClose();
     }
   }, [loading]);
 
@@ -98,8 +115,11 @@ const Profile = (): JSX.Element => {
       phone: data.phone,
       address: data.address,
     };
-    console.log("httpParam", httpParam);
     dispatch(updateProfileAction(httpParam));
+  };
+
+  const handleCloseDialog = () => {
+    setOpenCloseDialog(false);
   };
 
   return (
@@ -107,19 +127,45 @@ const Profile = (): JSX.Element => {
       {loading ? (
         <LinearProgress />
       ) : (
-        <UserForm
-          schema={schema}
-          onSubmit={onSubmit}
-          defaultValues={defaultValues}
-          visibility={{
-            password: false,
-          }}
-          disabled={{
-            email: true,
-            dni: true,
-          }}
-          submitText="Guardar"
-        />
+        <>
+          <UserForm
+            schema={schema}
+            onSubmit={onSubmit}
+            defaultValues={defaultValues}
+            visibility={{
+              password: false,
+            }}
+            disabled={{
+              email: true,
+              dni: true,
+            }}
+            submitText="Guardar"
+          />
+          <Grid container>
+            <Grid item xs={12} className="pb-5">
+              <Divider></Divider>
+            </Grid>
+            <Grid item xs={12}>
+              <Button
+                className="text-center"
+                onClick={() => {
+                  setOpenCloseDialog(true);
+                }}
+                type="button"
+                variant="contained"
+                color="inherit"
+              >
+                Cerrar Cuenta
+              </Button>
+              <CloseReasonDialog
+                id="ringtone-menu"
+                keepMounted
+                open={openCloseDialog}
+                onClose={handleCloseDialog}
+              />
+            </Grid>
+          </Grid>
+        </>
       )}
     </Box>
   );

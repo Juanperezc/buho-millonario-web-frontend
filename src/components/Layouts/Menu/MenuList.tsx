@@ -7,7 +7,10 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PeopleIcon from "@mui/icons-material/People";
 import BarChartIcon from "@mui/icons-material/BarChart";
 
-export const MenuListPrimary = (
+interface MenuListPrimaryProps {
+  role: string;
+}
+const MenuListPrimary = ({ role }: MenuListPrimaryProps) => (
   <React.Fragment>
     <ListItemButton href="/dashboard/home">
       <ListItemIcon>
@@ -33,15 +36,18 @@ export const MenuListPrimary = (
       </ListItemIcon>
       <ListItemText primary="Mis tickets" />
     </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <BarChartIcon />
-      </ListItemIcon>
-      <ListItemText primary="Reportes" />
-    </ListItemButton>
+    {role == "admin" && (
+      <ListItemButton>
+        <ListItemIcon>
+          <BarChartIcon />
+        </ListItemIcon>
+        <ListItemText primary="Reportes" />
+      </ListItemButton>
+    )}
   </React.Fragment>
 );
 
+export default MenuListPrimary;
 /* export const MenuListSecondary = (
   <React.Fragment>
     <ListSubheader component="div" inset>

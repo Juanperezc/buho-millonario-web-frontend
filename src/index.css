@@ -13,3 +13,7 @@
 .MuiTelInput-TextField{
   width: 100%;
 }
+
+.swal2-container {
+  z-index: 10000;
+}

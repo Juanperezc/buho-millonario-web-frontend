@@ -4,8 +4,7 @@ import NoAuthLayout from "@components/Layouts/NoAuthLayout";
 import { getProfileAction } from "@features/user/userActions";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import Home from "@pages/Dashboard/Home";
-import SignIn from "@pages/SignIn/SignIn";
-import SignUp from "@pages/SignUp/SignUp";
+import SignIn from "@pages/Auth/SignIn/SignIn";
 import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import {
@@ -17,9 +16,15 @@ import {
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Profile from "@pages/Dashboard/Profile";
 import MyTickets from "@pages/Dashboard/MyTickets";
+import { ThemeProvider } from "@emotion/react";
+import theme from "./theme";
+import ForgotPassword from "@pages/Auth/ForgotPassword/ForgotPassword";
+import ResetPassword from "@pages/Auth/ResetPassword/ResetPassword";
+import SignUp from "@pages/Auth/SignUp/SignUp";
 
 function App() {
   const queryClient = new QueryClient();
+
   const { userToken } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   useEffect(() => {
@@ -44,7 +49,23 @@ function App() {
       path: "/sign-up",
       element: (
         <NoAuthLayout userToken={userToken}>
-          <SignUp />
+          <SignUp/>
+        </NoAuthLayout>
+      ),
+    },
+    {
+      path: "/forgot-password",
+      element: (
+        <NoAuthLayout userToken={userToken}>
+          <ForgotPassword />
+        </NoAuthLayout>
+      ),
+    },
+    {
+      path: "/reset-password",
+      element: (
+        <NoAuthLayout userToken={userToken}>
+          <ResetPassword />
         </NoAuthLayout>
       ),
     },
@@ -86,7 +107,9 @@ function App() {
   return (
     <QueryClientProvider client={queryClient} contextSharing={true}>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <RouterProvider router={router} />
+        <ThemeProvider theme={theme}>
+          <RouterProvider router={router} />
+        </ThemeProvider>
       </LocalizationProvider>
     </QueryClientProvider>
   );

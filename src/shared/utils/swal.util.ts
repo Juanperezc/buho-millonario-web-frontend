@@ -14,7 +14,10 @@ export const swalClose = () => {
   Swal.close();
 };
 
-export const swalError = (title: string, text?: string) => {
+export const swalError = (
+  title: string = "Ha ocurrido un error",
+  text?: string
+) => {
   Swal.fire({
     icon: "error",
     title: title,
@@ -22,11 +25,10 @@ export const swalError = (title: string, text?: string) => {
   });
 };
 
-
-export const swalSuccess = (title: string, text?: string) => {
+export const swalSuccess = (title: string = "Éxito", text?: string) => {
   Swal.fire({
     icon: "success",
-    title: title ?? "Éxito",
+    title: title,
     text: text ?? "",
   });
-}
+};
