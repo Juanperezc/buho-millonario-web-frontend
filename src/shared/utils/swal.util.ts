@@ -30,5 +30,6 @@ export const swalSuccess = (title: string = "Éxito", text?: string) => {
     icon: "success",
     title: title,
     text: text ?? "",
+    confirmButtonText: "Aceptar",
   });
 };

@@ -58,8 +58,6 @@ export default function SignInForm() {
     resolver: yupResolver(schema),
   });
 
-  // check param error from url
-
   useMemo(() => {
     if (urlError != null) {
       toastError("No estas autorizado para realizar esta operación");

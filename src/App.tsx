@@ -21,6 +21,9 @@ import theme from "./theme";
 import ForgotPassword from "@pages/Auth/ForgotPassword/ForgotPassword";
 import ResetPassword from "@pages/Auth/ResetPassword/ResetPassword";
 import SignUp from "@pages/Auth/SignUp/SignUp";
+import Users from "@pages/Dashboard/Users/Users";
+import EditUser from "@pages/Dashboard/Users/EditUser";
+import ShowUser from "@pages/Dashboard/Users/ShowUser";
 
 function App() {
   const queryClient = new QueryClient();
@@ -49,7 +52,7 @@ function App() {
       path: "/sign-up",
       element: (
         <NoAuthLayout userToken={userToken}>
-          <SignUp/>
+          <SignUp />
         </NoAuthLayout>
       ),
     },
@@ -89,6 +92,30 @@ function App() {
           element: (
             <DashboardLayout title="Mi perfil" userToken={userToken}>
               <Profile />
+            </DashboardLayout>
+          ),
+        },
+        {
+          path: "users",
+          element: (
+            <DashboardLayout title="Gestionar apostadores" userToken={userToken}>
+              <Users />
+            </DashboardLayout>
+          ),
+        },
+        {
+          path: "users/edit/:id",
+          element: (
+            <DashboardLayout title="Editar apostador" userToken={userToken}>
+              <EditUser />
+            </DashboardLayout>
+          ),
+        },
+        {
+          path: "users/show/:id",
+          element: (
+            <DashboardLayout title="Ver apostador" userToken={userToken}>
+              <ShowUser />
             </DashboardLayout>
           ),
         },

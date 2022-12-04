@@ -7,6 +7,7 @@
       "@app/*": ["app/*"],
       "@features/*": ["features/*"],
       "@interfaces/*": ["shared/interfaces/*"],
+      "@schemas/*": ["shared/schemas/*"],
       "@utils/*": ["shared/utils/*"],
       "@services/*": ["services/*"],
       "@constants/*": ["shared/constants/*"]

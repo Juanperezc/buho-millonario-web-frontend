@@ -146,17 +146,20 @@ const Profile = (): JSX.Element => {
               <Divider></Divider>
             </Grid>
             <Grid item xs={12}>
-              <Button
-                className="text-center"
-                onClick={() => {
-                  setOpenCloseDialog(true);
-                }}
-                type="button"
-                variant="contained"
-                color="inherit"
-              >
-                Cerrar Cuenta
-              </Button>
+              {userInfo.role == "user" && (
+                <Button
+                  className="text-center"
+                  onClick={() => {
+                    setOpenCloseDialog(true);
+                  }}
+                  type="button"
+                  variant="contained"
+                  color="inherit"
+                >
+                  Cerrar Cuenta
+                </Button>
+              )}
+
               <CloseReasonDialog
                 id="ringtone-menu"
                 keepMounted

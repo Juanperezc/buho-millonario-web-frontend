@@ -6,46 +6,95 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PeopleIcon from "@mui/icons-material/People";
 import BarChartIcon from "@mui/icons-material/BarChart";
+import clsx from "clsx";
 
 interface MenuListPrimaryProps {
   role: string;
 }
-const MenuListPrimary = ({ role }: MenuListPrimaryProps) => (
-  <React.Fragment>
-    <ListItemButton href="/dashboard/home">
-      <ListItemIcon>
-        <DashboardIcon />
-      </ListItemIcon>
-      <ListItemText primary="Inicio" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <ShoppingCartIcon />
-      </ListItemIcon>
-      <ListItemText primary="Ver Sorteos" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <PeopleIcon />
-      </ListItemIcon>
-      <ListItemText primary="Recargar saldo" />
-    </ListItemButton>
-    <ListItemButton href="/dashboard/tickets">
-      <ListItemIcon>
-        <PeopleIcon />
-      </ListItemIcon>
-      <ListItemText primary="Mis tickets" />
-    </ListItemButton>
-    {role == "admin" && (
-      <ListItemButton>
+const MenuListPrimary = ({ role }: MenuListPrimaryProps) => {
+  const path = window.location.pathname;
+
+  const isPathName = (pathName: string) => {
+    return pathName === path;
+  };
+  return (
+    <React.Fragment>
+      <ListItemButton
+        className={clsx(
+          isPathName("/dashboard/home") ? "bg-primary text-white" : null
+        )}
+        href="/dashboard/home"
+      >
         <ListItemIcon>
-          <BarChartIcon />
+          <DashboardIcon
+            className={isPathName("/dashboard/home") ? "text-white" : ""}
+          />
         </ListItemIcon>
-        <ListItemText primary="Reportes" />
+        <ListItemText primary="Inicio" />
       </ListItemButton>
-    )}
-  </React.Fragment>
-);
+      {role == "user" && (
+        <>
+          <ListItemButton>
+            <ListItemIcon>
+              <ShoppingCartIcon />
+            </ListItemIcon>
+            <ListItemText primary="Ver Sorteos" />
+          </ListItemButton>
+          <ListItemButton>
+            <ListItemIcon>
+              <PeopleIcon />
+            </ListItemIcon>
+            <ListItemText primary="Recargar saldo" />
+          </ListItemButton>
+          <ListItemButton href="/dashboard/tickets">
+            <ListItemIcon>
+              <PeopleIcon />
+            </ListItemIcon>
+            <ListItemText primary="Mis tickets" />
+          </ListItemButton>
+        </>
+      )}
+      {role == "admin" && (
+        <>
+          <ListItemButton
+            className={clsx(
+              isPathName("/dashboard/lotteries")
+                ? "bg-primary text-white"
+                : null
+            )}
+            href="/dashboard/lotteries"
+          >
+            <ListItemIcon
+              className={isPathName("/dashboard/lotteries") ? "text-white" : ""}
+            >
+              <PeopleIcon />
+            </ListItemIcon>
+            <ListItemText primary="Gestión de Loterías" />
+          </ListItemButton>
+          <ListItemButton
+            className={clsx(
+              isPathName("/dashboard/users") ? "bg-primary text-white" : null
+            )}
+            href="/dashboard/users"
+          >
+            <ListItemIcon>
+              <PeopleIcon
+                className={isPathName("/dashboard/users") ? "text-white" : ""}
+              />
+            </ListItemIcon>
+            <ListItemText primary="Gestión de apostadores" />
+          </ListItemButton>
+          <ListItemButton>
+            <ListItemIcon>
+              <BarChartIcon />
+            </ListItemIcon>
+            <ListItemText primary="Reportes" />
+          </ListItemButton>
+        </>
+      )}
+    </React.Fragment>
+  );
+};
 
 export default MenuListPrimary;
 /* export const MenuListSecondary = (
