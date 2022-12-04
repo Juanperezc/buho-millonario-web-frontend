@@ -25,6 +25,20 @@ export const swalError = (
   });
 };
 
+export const swalQuestion = (
+  title: string = "¿Está seguro?",
+  text?: string
+) => {
+  return Swal.fire({
+    icon: "question",
+    title: title,
+    text: text ?? "",
+    showCancelButton: true,
+    confirmButtonText: "Aceptar",
+    cancelButtonText: "Cancelar",
+  });
+}
+
 export const swalSuccess = (title: string = "Éxito", text?: string) => {
   Swal.fire({
     icon: "success",

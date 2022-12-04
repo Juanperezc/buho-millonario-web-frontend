@@ -14,9 +14,15 @@ export const showUser = (id: number | string) => {
   );
 };
 
-export const updateUser = (id: number | string, data: UpdateProfileInterface) => {
+export const updateUser = (id: number, data: UpdateProfileInterface) => {
   return axiosInstance.put<UserInterface>(
     process.env.REACT_APP_BASE_URL + "/user/" + id,
     data
   );
 };
+
+export const restoreAccount = (id: number) => {
+  return axiosInstance.post(
+    process.env.REACT_APP_BASE_URL + "/user/restore/" + id
+  );
+}

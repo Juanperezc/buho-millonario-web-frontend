@@ -55,7 +55,7 @@ const schema = yup
 
 const Profile = (): JSX.Element => {
   const { loading, error, success, userInfo, lastAction } = useAppSelector(
-    (state) => state.user
+    (state) => state?.user
   );
 
   const [openCloseDialog, setOpenCloseDialog] = useState(false);
@@ -72,14 +72,14 @@ const Profile = (): JSX.Element => {
     birthDate: userInfo?.birthDate,
     state: userInfo?.parish
       ? {
-          label: userInfo?.parish.municipality.state.name,
-          value: userInfo?.parish.municipality.state.id,
+          label: userInfo?.parish?.municipality?.state?.name,
+          value: userInfo?.parish?.municipality?.state?.id,
         }
       : null,
     municipality: userInfo?.parish
       ? {
-          label: userInfo?.parish.municipality.name,
-          value: userInfo?.parish.municipality.id,
+          label: userInfo?.parish?.municipality?.name,
+          value: userInfo?.parish?.municipality?.id,
         }
       : null,
     parish: userInfo?.parish

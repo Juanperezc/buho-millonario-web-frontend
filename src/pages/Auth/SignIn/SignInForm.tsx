@@ -19,12 +19,11 @@ import {
   PASSWORD_MIN_YUP,
   PASSWORD_REQUIRED_YUP,
 } from "shared/constants/yup.constants";
-import { swalClose, swalLoading } from "@utils/swal.util";
+import { swalClose, swalLoading, swalSuccess } from "@utils/swal.util";
 import { toastError } from "@utils/toast.util";
 import { useNavigate } from "react-router-dom";
 import { useMemo } from "react";
-
-
+import { SUCCESS_PASSWORD_RESET } from "@constants/success.constants";
 
 interface IFormInputs {
   email: string;
@@ -50,6 +49,7 @@ export default function SignInForm() {
   const navigate = useNavigate();
   const urlParams = new URLSearchParams(window.location.search);
   const urlError = urlParams.get("error");
+  const resetParam = urlParams.get("reset");
   const {
     register,
     handleSubmit,
@@ -60,9 +60,13 @@ export default function SignInForm() {
 
   useMemo(() => {
     if (urlError != null) {
-      toastError("No estas autorizado para realizar esta operación");
+      toastError("Email o contraseña incorrecto");
     }
-  }, [urlError]);
+
+    if (resetParam) {
+      swalSuccess(SUCCESS_PASSWORD_RESET);
+    }
+  }, [urlError, resetParam]);
 
   const onSubmit = (data: IFormInputs) => {
     dispatch(userLoginAction(data));
@@ -76,84 +80,87 @@ export default function SignInForm() {
   }, [success, userInfo]);
 
   useEffect(() => {
+    if (error){
+      swalClose();
+    }
     if (error === "Unauthorized") {
+      swalClose();
       toastError("Email o contraseña incorrecto");
     }
-    swalClose();
+
   }, [error]);
 
   useEffect(() => {
-    if (loading) swalLoading();
+    if (loading) swalLoading(); 
   }, [loading]);
 
   return (
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <Box
+        sx={{
+          marginTop: 8,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Typography component="h1" variant="h5">
+          Bienvenido
+        </Typography>
         <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
+          component="form"
+          onSubmit={handleSubmit(onSubmit)}
+          noValidate
+          sx={{ mt: 1 }}
         >
-          <Typography component="h1" variant="h5">
-            Bienvenido
-          </Typography>
-          <Box
-            component="form"
-            onSubmit={handleSubmit(onSubmit)}
-            noValidate
-            sx={{ mt: 1 }}
+          <TextField
+            {...register("email")}
+            margin="normal"
+            error={errors.email ? true : false}
+            helperText={errors.email?.message}
+            required
+            fullWidth
+            id="email"
+            label="Email"
+            name="email"
+            autoFocus
+          />
+          <TextField
+            {...register("password")}
+            margin="normal"
+            error={errors.password ? true : false}
+            helperText={errors.password?.message}
+            required
+            fullWidth
+            name="password"
+            label="Contraseña"
+            type="password"
+            id="password"
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
           >
-            <TextField
-              {...register("email")}
-              margin="normal"
-              error={errors.email ? true : false}
-              helperText={errors.email?.message}
-              required
-              fullWidth
-              id="email"
-              label="Email"
-              name="email"
-              autoFocus
-            />
-            <TextField
-              {...register("password")}
-              margin="normal"
-              error={errors.password ? true : false}
-              helperText={errors.password?.message}
-              required
-              fullWidth
-              name="password"
-              label="Contraseña"
-              type="password"
-              id="password"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Iniciar sesión
-            </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="forgot-password" variant="body2">
-                  Recuperar contraseña
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="sign-up" variant="body2">
-                  ¿No tienes cuenta? Regístrate
-                </Link>
-              </Grid>
+            Iniciar sesión
+          </Button>
+          <Grid container>
+            <Grid item xs>
+              <Link href="forgot-password" variant="body2">
+                Recuperar contraseña
+              </Link>
             </Grid>
-          </Box>
+            <Grid item>
+              <Link href="sign-up" variant="body2">
+                ¿No tienes cuenta? Regístrate
+              </Link>
+            </Grid>
+          </Grid>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
-      </Container>
-
+      </Box>
+      <Copyright sx={{ mt: 8, mb: 4 }} />
+    </Container>
   );
 }

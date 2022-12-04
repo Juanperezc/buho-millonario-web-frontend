@@ -75,14 +75,12 @@ export default function ResetPasswordForm() {
   }, [token]);
 
   const onSubmit = () => {
-    console.log('onSubmit')
     resetPasswordQuery.refetch();
   };
 
   useEffect(() => {
-    if (resetPasswordQuery.isSuccess) {
-      swalSuccess(SUCCESS_PASSWORD_RESET);
-      navigate("/sign-in");
+    if (resetPasswordQuery.isSuccess) {    
+        navigate("/sign-in?reset=true");
     }
   }, [resetPasswordQuery.isSuccess]);
 

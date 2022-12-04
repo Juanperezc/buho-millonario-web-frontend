@@ -3,7 +3,7 @@ import { Box } from "@mui/system";
 import UserForm, {
   IFormValueInterface,
 } from "@components/Forms/UserForm/UserForm";
-import { Divider, Grid, LinearProgress } from "@mui/material";
+import { Button, Divider, Grid, LinearProgress } from "@mui/material";
 import {
   updateProfileAction,
   updateProfileType,
@@ -13,6 +13,7 @@ import {
   swalClose,
   swalError,
   swalLoading,
+  swalQuestion,
   swalSuccess,
 } from "@utils/swal.util";
 import { isString } from "lodash";
@@ -20,7 +21,7 @@ import { UpdateProfileInterface } from "@interfaces/forms/user.interface";
 import dayjs from "dayjs";
 import { userSchema } from "@schemas/user.schema";
 import { useQuery } from "react-query";
-import { showUser, updateUser } from "@services/userService";
+import { restoreAccount, showUser, updateUser } from "@services/userService";
 import { useParams } from "react-router-dom";
 
 const schema = userSchema;
@@ -41,13 +42,21 @@ const EditUser = (): JSX.Element => {
 
   const updateUserQuery = useQuery(
     "update-user",
-    () => updateUser(queryParam.id ?? "", profileData),
+    () => updateUser(Number(queryParam.id) ?? 1, profileData),
     {
       enabled: false,
       retry: 0,
     }
   );
 
+  const restoreAccountQuery = useQuery(
+    "restore-account",
+    () => restoreAccount(Number(queryParam.id) ?? 1),
+    {
+      enabled: false,
+      retry: 0,
+    }
+  );
   const userInfo = showUserQuery.data?.data;
 
   const defaultValues = {
@@ -93,7 +102,6 @@ const EditUser = (): JSX.Element => {
   };
 
   useEffect(() => {
-    console.log("updateUserQuery", updateUserQuery);
     if (updateUserQuery.isSuccess) {
       swalClose();
       updateUserQuery.remove();
@@ -104,10 +112,32 @@ const EditUser = (): JSX.Element => {
       swalError("Error al actualizar el usuario");
     }
     if (updateUserQuery.isLoading) {
-      console.log("tt");
       swalLoading("Actualizando usuario");
     }
   }, [updateUserQuery]);
+
+  useEffect(() => {
+    if (restoreAccountQuery.isSuccess) {
+      swalClose();
+      restoreAccountQuery.remove();
+      swalSuccess("Cuenta restablecida correctamente");
+    }
+    if (restoreAccountQuery.isError) {
+      swalError("Error al restablecer la cuenta");
+    }
+    if (restoreAccountQuery.isLoading) {
+      swalLoading("Restableciendo cuenta");
+    }
+  }, [restoreAccountQuery]);
+
+  const handleRestoreAccount = () => {
+    swalQuestion("¿Está seguro de restablecer esta cuenta?").then((result) => {
+      if (result.isConfirmed) {
+        swalLoading("Restableciendo cuenta...");
+        restoreAccountQuery.refetch();
+      }
+    });
+  };
 
   return (
     <Box>
@@ -128,7 +158,19 @@ const EditUser = (): JSX.Element => {
             <Grid item xs={12} className="pb-5">
               <Divider></Divider>
             </Grid>
-            <Grid item xs={12}></Grid>
+            <Grid item xs={12}>
+              {userInfo?.deletedAt && (
+                <Button
+                  className="text-center"
+                  onClick={handleRestoreAccount}
+                  type="button"
+                  variant="contained"
+                  color="inherit"
+                >
+                  Restablecer Cuenta
+                </Button>
+              )}
+            </Grid>
           </Grid>
         </>
       )}

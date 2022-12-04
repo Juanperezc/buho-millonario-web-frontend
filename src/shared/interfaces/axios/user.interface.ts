@@ -12,4 +12,6 @@ export type UserInterface = {
   budget: number;
   address: string;
   parish: ParishInterface;
+  closeReason: string;
+  deletedAt: Date;
 };
