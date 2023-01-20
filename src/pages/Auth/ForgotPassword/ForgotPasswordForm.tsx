@@ -16,7 +16,7 @@ import {
 } from "shared/constants/yup.constants";
 import { swalError, swalLoading, swalSuccess } from "@utils/swal.util";
 import { useQuery } from "react-query";
-import { forgotPassword, resetPassword } from "@services/authService";
+import { forgotPassword } from "@services/authService";
 import { Alert, Divider } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { GENERIC_ERROR_MESSAGE } from "@constants/error.constants";

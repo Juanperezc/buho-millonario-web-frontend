@@ -1,6 +1,5 @@
 import * as yup from "yup";
 import {
-    ADDRESS_REQUIRED_YUP,
     BIRTH_DATE_REQUIRED_YUP,
     DNI_REQUIRED_YUP,
     EMAIL_REQUIRED_YUP,
@@ -8,7 +7,6 @@ import {
     LAST_NAME_REQUIRED_YUP,
     MUNICIPALITY_REQUIRED_YUP,
     PARISH_REQUIRED_YUP,
-    PHONE_REQUIRED_YUP,
     STATE_REQUIRED_YUP,
   } from "@constants/yup.constants";
 

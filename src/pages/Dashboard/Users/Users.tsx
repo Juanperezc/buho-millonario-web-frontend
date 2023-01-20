@@ -43,7 +43,7 @@ const Users = () => {
               "button",
               {
                 className:
-                  "py-2 mb-4 px-4 border rounded-md text-white bg-primary",
+                  "py-2 mb-4 px-4 border rounded-md text-white bg-warning",
                 onClick: () => {
                   editUser(row.cells[0].data as number);
                 },

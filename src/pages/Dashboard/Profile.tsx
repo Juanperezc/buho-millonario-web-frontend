@@ -1,6 +1,4 @@
 import { useAppDispatch, useAppSelector } from "@app/hooks";
-
-import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import {
   ADDRESS_REQUIRED_YUP,
@@ -11,9 +9,6 @@ import {
   LAST_NAME_REQUIRED_YUP,
   MUNICIPALITY_REQUIRED_YUP,
   PARISH_REQUIRED_YUP,
-  PASSWORD_MAX_YUP,
-  PASSWORD_MIN_YUP,
-  PASSWORD_REQUIRED_YUP,
   PHONE_REQUIRED_YUP,
   STATE_REQUIRED_YUP,
 } from "@constants/yup.constants";
@@ -28,7 +23,7 @@ import {
 } from "@features/user/userActions";
 import { useEffect, useState } from "react";
 import {
-  swalClose,
+
   swalError,
   swalLoading,
   swalSuccess,

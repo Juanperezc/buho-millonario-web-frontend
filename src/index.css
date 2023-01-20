@@ -21,3 +21,7 @@
 .MuiListItemIcon-root{
   min-width: 32px !important;
 }
+
+.my-2 span {
+    margin-right: 1rem;
+}

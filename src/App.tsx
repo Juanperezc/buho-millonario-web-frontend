@@ -24,6 +24,10 @@ import SignUp from "@pages/Auth/SignUp/SignUp";
 import Users from "@pages/Dashboard/Users/Users";
 import EditUser from "@pages/Dashboard/Users/EditUser";
 import ShowUser from "@pages/Dashboard/Users/ShowUser";
+import Lotteries from "@pages/Dashboard/Lotteries/Lotteries";
+import ShowLottery from "@pages/Dashboard/Lotteries/ShowLottery";
+import EditLottery from "@pages/Dashboard/Lotteries/EditLottery";
+import CreateLottery from "@pages/Dashboard/Lotteries/CreateLottery";
 
 function App() {
   const queryClient = new QueryClient();
@@ -95,6 +99,39 @@ function App() {
             </DashboardLayout>
           ),
         },
+        {
+          path: "lotteries",
+          element: (
+            <DashboardLayout title="Gestionar Sorteos" userToken={userToken}>
+              <Lotteries />
+            </DashboardLayout>
+          ),
+        },
+        {
+          path: "lotteries/create",
+          element: (
+            <DashboardLayout title="Crear Sorteo" userToken={userToken}>
+              <CreateLottery />
+            </DashboardLayout>
+          ),
+        },
+        {
+          path: "lotteries/show/:id",
+          element: (
+            <DashboardLayout title="Ver Sorteo" userToken={userToken}>
+              <ShowLottery />
+            </DashboardLayout>
+          ),
+        },
+        {
+          path: "lotteries/edit/:id",
+          element: (
+            <DashboardLayout title="Editar Sorteo" userToken={userToken}>
+              <EditLottery />
+            </DashboardLayout>
+          ),
+        },
+        
         {
           path: "users",
           element: (

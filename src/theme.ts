@@ -9,6 +9,9 @@ const theme = createTheme({
     secondary: {
       main: "#0a0828",
     },
+    warning: {
+      main: "#f3b334",
+    },
     error: {
       main: "#f33450",
     },

@@ -10,8 +10,9 @@ import clsx from "clsx";
 
 interface MenuListPrimaryProps {
   role: string;
+  open: boolean;
 }
-const MenuListPrimary = ({ role }: MenuListPrimaryProps) => {
+const MenuListPrimary = ({ role, open }: MenuListPrimaryProps) => {
   const path = window.location.pathname;
 
   const isPathName = (pathName: string) => {
@@ -30,7 +31,7 @@ const MenuListPrimary = ({ role }: MenuListPrimaryProps) => {
             className={isPathName("/dashboard/home") ? "text-white" : ""}
           />
         </ListItemIcon>
-        <ListItemText primary="Inicio" />
+        {open && <ListItemText primary="Inicio" />}
       </ListItemButton>
       {role == "user" && (
         <>
@@ -38,19 +39,23 @@ const MenuListPrimary = ({ role }: MenuListPrimaryProps) => {
             <ListItemIcon>
               <ShoppingCartIcon />
             </ListItemIcon>
-            <ListItemText primary="Ver Sorteos" />
+            {open && (
+              <ListItemText sx={{ display: "none" }} primary="Ver Sorteos" />
+            )}
           </ListItemButton>
           <ListItemButton>
             <ListItemIcon>
               <PeopleIcon />
             </ListItemIcon>
-            <ListItemText primary="Recargar saldo" />
+            {open && <ListItemText primary="Recargar saldo" />}
           </ListItemButton>
           <ListItemButton href="/dashboard/tickets">
             <ListItemIcon>
               <PeopleIcon />
             </ListItemIcon>
-            <ListItemText primary="Mis tickets" />
+            {open && (
+              <ListItemText sx={{ display: "none" }} primary="Mis tickets" />
+            )}
           </ListItemButton>
         </>
       )}
@@ -69,7 +74,11 @@ const MenuListPrimary = ({ role }: MenuListPrimaryProps) => {
             >
               <PeopleIcon />
             </ListItemIcon>
-            <ListItemText primary="Gestión de Loterías" />
+            {open && (
+              <ListItemText
+                primary="Gestión de Sorteos"
+              />
+            )}
           </ListItemButton>
           <ListItemButton
             className={clsx(
@@ -82,13 +91,13 @@ const MenuListPrimary = ({ role }: MenuListPrimaryProps) => {
                 className={isPathName("/dashboard/users") ? "text-white" : ""}
               />
             </ListItemIcon>
-            <ListItemText primary="Gestión de apostadores" />
+            {open && <ListItemText primary="Gestión de apostadores" />}
           </ListItemButton>
           <ListItemButton>
             <ListItemIcon>
               <BarChartIcon />
             </ListItemIcon>
-            <ListItemText primary="Reportes" />
+            {open && <ListItemText primary="Reportes" />}
           </ListItemButton>
         </>
       )}

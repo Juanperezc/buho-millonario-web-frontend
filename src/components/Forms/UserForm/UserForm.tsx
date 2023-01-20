@@ -12,7 +12,7 @@ import AutocompleteHookForm from "@components/HookForm/Autocomplete";
 import MuiPhoneInput from "@components/HookForm/MuiPhoneInput";
 import DatePicker from "@components/HookForm/DatePicker";
 import dayjs from "dayjs";
-import { userInfo } from "os";
+
 
 type IFormStateInterface = {
   firstName: boolean;
@@ -135,14 +135,6 @@ const UserForm = (props: UserFormInterface): JSX.Element => {
     }
   );
 
-/*   useEffect(() => {
-    if (queryStates.data && queryStates.data.data.length > 0
-      && userInfo.) {
-      
-    }
-  }, [queryStates]); */
-
-  // useForm functions
   useEffect(() => {
     queryStates.refetch();
   }, []);

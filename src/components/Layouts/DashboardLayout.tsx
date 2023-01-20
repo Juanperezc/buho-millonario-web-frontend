@@ -142,7 +142,7 @@ export default function DashboardLayout({
         </Toolbar>
         <Divider />
         <List component="nav">
-          {<MenuListPrimary role={userInfo?.role} />}
+          {<MenuListPrimary open={open} role={userInfo?.role} />}
           {/*       <Divider sx={{ my: 1 }} /> */}
           {/*   {MenuListSecondary} */}
         </List>
