@@ -1,63 +1,61 @@
-import { useAppDispatch, useAppSelector } from "@app/hooks";
-import { Box } from "@mui/system";
+
+import { Box } from '@mui/system'
 import UserForm, {
-  IFormValueInterface,
-} from "@components/Forms/UserForm/UserForm";
-import { Button, Divider, Grid, LinearProgress } from "@mui/material";
+  IFormValueInterface
+} from '@components/Forms/UserForm/UserForm'
+import { Button, Divider, Grid, LinearProgress } from '@mui/material'
 import {
-  updateProfileAction,
-  updateProfileType,
-} from "@features/user/userActions";
-import { useEffect, useState } from "react";
+} from '@features/user/userActions'
+import { useEffect, useState } from 'react'
 import {
   swalClose,
   swalError,
   swalLoading,
   swalQuestion,
-  swalSuccess,
-} from "@utils/swal.util";
-import { isString } from "lodash";
-import { UpdateProfileInterface } from "@interfaces/forms/user.interface";
-import dayjs from "dayjs";
-import { userSchema } from "@schemas/user.schema";
-import { useQuery } from "react-query";
-import { restoreAccount, showUser, updateUser } from "@services/userService";
-import { useParams } from "react-router-dom";
+  swalSuccess
+} from '@utils/swal.util'
+import { UpdateProfileInterface } from '@interfaces/forms/user.interface'
+import dayjs from 'dayjs'
+import { userSchema } from '@schemas/user.schema'
+import { useQuery } from 'react-query'
+import { restoreAccount, showUser, updateUser } from '@services/userService'
+import { useParams } from 'react-router-dom'
 
-const schema = userSchema;
+const schema = userSchema
 
 const EditUser = (): JSX.Element => {
   const [profileData, setProfileData] = useState<UpdateProfileInterface>(
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     {} as UpdateProfileInterface
-  );
-  const queryParam = useParams<{ id: string }>();
+  )
+  const queryParam = useParams<{ id: string }>()
   const showUserQuery = useQuery(
-    "show-user",
-    () => showUser(queryParam.id ?? ""),
+    'show-user',
+    async () => await showUser(queryParam.id ?? ''),
     {
       enabled: true,
-      retry: 0,
+      retry: 0
     }
-  );
+  )
 
   const updateUserQuery = useQuery(
-    "update-user",
-    () => updateUser(Number(queryParam.id) ?? 1, profileData),
+    'update-user',
+    async () => await updateUser(Number(queryParam.id) ?? 1, profileData),
     {
       enabled: false,
-      retry: 0,
+      retry: 0
     }
-  );
+  )
 
   const restoreAccountQuery = useQuery(
-    "restore-account",
-    () => restoreAccount(Number(queryParam.id) ?? 1),
+    'restore-account',
+    async () => await restoreAccount(Number(queryParam.id) ?? 1),
     {
       enabled: false,
-      retry: 0,
+      retry: 0
     }
-  );
-  const userInfo = showUserQuery.data?.data;
+  )
+  const userInfo = showUserQuery.data?.data
 
   const defaultValues = {
     firstName: userInfo?.firstName,
@@ -70,19 +68,19 @@ const EditUser = (): JSX.Element => {
     state: userInfo?.parish
       ? {
           label: userInfo?.parish.municipality.state.name,
-          value: userInfo?.parish.municipality.state.id,
+          value: userInfo?.parish.municipality.state.id
         }
       : null,
     municipality: userInfo?.parish
       ? {
           label: userInfo?.parish.municipality.name,
-          value: userInfo?.parish.municipality.id,
+          value: userInfo?.parish.municipality.id
         }
       : null,
     parish: userInfo?.parish
       ? { label: userInfo?.parish.name, value: userInfo?.parish.id }
-      : null,
-  };
+      : null
+  }
 
   const onSubmit = (data: IFormValueInterface) => {
     const httpParam: UpdateProfileInterface = {
@@ -91,66 +89,68 @@ const EditUser = (): JSX.Element => {
       firstName: data.firstName,
       lastName: data.lastName,
       phone: data.phone,
-      address: data.address,
-    };
+      address: data.address
+    }
 
-    swalLoading("Actualizando usuario...");
-    setProfileData(httpParam);
+    swalLoading('Actualizando usuario...')
+    setProfileData(httpParam)
     setTimeout(() => {
-      updateUserQuery.refetch();
-    }, 1000);
-  };
+      void updateUserQuery.refetch()
+    }, 1000)
+  }
 
   useEffect(() => {
     if (updateUserQuery.isSuccess) {
-      swalClose();
-      updateUserQuery.remove();
-      swalSuccess("Usuario actualizado correctamente");
+      swalClose()
+      updateUserQuery.remove()
+      swalSuccess('Usuario actualizado correctamente')
     }
     if (updateUserQuery.isError) {
-      swalClose();
-      swalError("Error al actualizar el usuario");
+      swalClose()
+      swalError('Error al actualizar el usuario')
     }
     if (updateUserQuery.isLoading) {
-      swalLoading("Actualizando usuario");
+      swalLoading('Actualizando usuario')
     }
-  }, [updateUserQuery]);
+  }, [updateUserQuery])
 
   useEffect(() => {
     if (restoreAccountQuery.isSuccess) {
-      swalClose();
-      restoreAccountQuery.remove();
-      swalSuccess("Cuenta restablecida correctamente");
+      swalClose()
+      restoreAccountQuery.remove()
+      swalSuccess('Cuenta restablecida correctamente')
     }
     if (restoreAccountQuery.isError) {
-      swalError("Error al restablecer la cuenta");
+      swalError('Error al restablecer la cuenta')
     }
     if (restoreAccountQuery.isLoading) {
-      swalLoading("Restableciendo cuenta");
+      swalLoading('Restableciendo cuenta')
     }
-  }, [restoreAccountQuery]);
+  }, [restoreAccountQuery])
 
   const handleRestoreAccount = () => {
-    swalQuestion("¿Está seguro de restablecer esta cuenta?").then((result) => {
+    void swalQuestion('¿Está seguro de restablecer esta cuenta?').then((result) => {
       if (result.isConfirmed) {
-        swalLoading("Restableciendo cuenta...");
-        restoreAccountQuery.refetch();
+        swalLoading('Restableciendo cuenta...')
+        void restoreAccountQuery.refetch()
       }
-    });
-  };
+    })
+  }
 
   return (
     <Box>
-      {showUserQuery.isLoading ? (
+      {showUserQuery.isLoading
+        ? (
         <LinearProgress />
-      ) : (
+          )
+        : (
         <>
           <UserForm
             schema={schema}
             onSubmit={onSubmit}
             defaultValues={defaultValues}
             visibility={{
-              password: false,
+              password: false
             }}
             submitText="Guardar"
           />
@@ -173,8 +173,8 @@ const EditUser = (): JSX.Element => {
             </Grid>
           </Grid>
         </>
-      )}
+          )}
     </Box>
-  );
-};
-export default EditUser;
+  )
+}
+export default EditUser

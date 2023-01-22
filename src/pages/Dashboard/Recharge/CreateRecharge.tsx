@@ -1,20 +1,18 @@
-import { useMutation } from "react-query";
-import { recharge } from "@services/rechargeService";
-import { useState } from "react";
+
+import { useState } from 'react'
 import RechargeForm, {
-  IRechargeFormValue,
-} from "@components/Forms/Recharge/RechargeForm";
-import BankAccountModal from "./components/BankAccountModal";
+  IRechargeFormValue
+} from '@components/Forms/Recharge/RechargeForm'
+import BankAccountModal from './components/BankAccountModal'
 
 const CreateRecharge = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [transactionData, setTransactionData] = useState<IRechargeFormValue>();
-  const handleMutationRecharge = useMutation(recharge);
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [transactionData, setTransactionData] = useState<IRechargeFormValue>()
 
   const onSubmit = (data: IRechargeFormValue) => {
-    setTransactionData(data);
-    setIsModalOpen(true);
-  };
+    setTransactionData(data)
+    setIsModalOpen(true)
+  }
 
   return (
     <>
@@ -25,7 +23,7 @@ const CreateRecharge = () => {
         data={transactionData}
       />
     </>
-  );
-};
+  )
+}
 
-export default CreateRecharge;
+export default CreateRecharge

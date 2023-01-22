@@ -1,5 +1,5 @@
-export type LittleAnimalInterface = {
-    id: number;
-    name: string;
-    image: string;
-};
+export interface LittleAnimalInterface {
+  id: number
+  name: string
+  image: string
+}

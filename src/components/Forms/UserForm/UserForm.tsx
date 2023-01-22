@@ -1,68 +1,67 @@
-import { yupResolver } from "@hookform/resolvers/yup";
-import { Alert, Button, Grid, InputAdornment, TextField } from "@mui/material";
-import { useForm } from "react-hook-form";
-import Box from "@mui/material/Box";
-import { useQuery } from "react-query";
-import { getAllStates } from "@services/stateService";
-import { useEffect } from "react";
-import { getParishesByMunicipality } from "@services/parishService";
-import { getMunicipalitiesByState } from "@services/municipalityService";
-import { AutocompleteInterface } from "@interfaces/components/autocomplete.interface";
-import AutocompleteHookForm from "@components/HookForm/Autocomplete";
-import MuiPhoneInput from "@components/HookForm/MuiPhoneInput";
-import DatePicker from "@components/HookForm/DatePicker";
-import dayjs from "dayjs";
+import { yupResolver } from '@hookform/resolvers/yup'
+import { Alert, Button, Grid, InputAdornment, TextField } from '@mui/material'
+import { useForm } from 'react-hook-form'
+import Box from '@mui/material/Box'
+import { useQuery } from 'react-query'
+import { getAllStates } from '@services/stateService'
+import { useEffect } from 'react'
+import { getParishesByMunicipality } from '@services/parishService'
+import { getMunicipalitiesByState } from '@services/municipalityService'
+import { AutocompleteInterface } from '@interfaces/components/autocomplete.interface'
+import AutocompleteHookForm from '@components/HookForm/Autocomplete'
+import MuiPhoneInput from '@components/HookForm/MuiPhoneInput'
+import DatePicker from '@components/HookForm/DatePicker'
+import dayjs from 'dayjs'
 
-
-type IFormStateInterface = {
-  firstName: boolean;
-  lastName: boolean;
-  state: boolean;
-  municipality: boolean;
-  parish: boolean;
-  dni: boolean;
-  birthDate: boolean;
-  phone: boolean;
-  address: boolean;
-  email: boolean;
-  password: boolean;
-};
+interface IFormStateInterface {
+  firstName: boolean
+  lastName: boolean
+  state: boolean
+  municipality: boolean
+  parish: boolean
+  dni: boolean
+  birthDate: boolean
+  phone: boolean
+  address: boolean
+  email: boolean
+  password: boolean
+}
 
 export interface IFormValueInterface {
-  firstName: string;
-  lastName: string;
-  state: AutocompleteInterface | null;
-  municipality: AutocompleteInterface | null;
-  parish: AutocompleteInterface | null;
-  dni: string;
-  birthDate: Date;
-  phone: string;
-  address: string;
-  email: string;
-  password: string;
+  firstName: string
+  lastName: string
+  state: AutocompleteInterface | null
+  municipality: AutocompleteInterface | null
+  parish: AutocompleteInterface | null
+  dni: string
+  birthDate: Date
+  phone: string
+  address: string
+  email: string
+  password: string
 }
 interface UserFormInterface {
-  schema: any;
-  visibility?: Partial<IFormStateInterface>;
-  disabled?: Partial<IFormStateInterface>;
-  defaultValues?: Partial<IFormValueInterface>;
-  submitText: string;
-  onSubmit: (data: IFormValueInterface) => void;
+  schema: any
+  visibility?: Partial<IFormStateInterface>
+  disabled?: Partial<IFormStateInterface>
+  defaultValues?: Partial<IFormValueInterface>
+  submitText: string
+  onSubmit: (data: IFormValueInterface) => void
 }
 
 const defaultValueInit: IFormValueInterface = {
-  firstName: "",
-  lastName: "",
+  firstName: '',
+  lastName: '',
   state: null,
   municipality: null,
   parish: null,
-  dni: "",
-  birthDate: dayjs().subtract(18, "year").toDate(),
-  phone: "",
-  address: "",
-  email: "",
-  password: "",
-};
+  dni: '',
+  birthDate: dayjs().subtract(18, 'year').toDate(),
+  phone: '',
+  address: '',
+  email: '',
+  password: ''
+}
 
 const defaultVisibilityInit: IFormStateInterface = {
   firstName: true,
@@ -75,8 +74,8 @@ const defaultVisibilityInit: IFormStateInterface = {
   phone: true,
   address: true,
   email: true,
-  password: true,
-};
+  password: true
+}
 
 const defaultDisabledInit: IFormStateInterface = {
   firstName: false,
@@ -89,14 +88,14 @@ const defaultDisabledInit: IFormStateInterface = {
   phone: false,
   address: false,
   email: false,
-  password: false,
-};
+  password: false
+}
 
 const UserForm = (props: UserFormInterface): JSX.Element => {
-  //default visibility all true
-  const defaultValueFields = { ...defaultValueInit, ...props.defaultValues };
-  const visibilityFields = { ...defaultVisibilityInit, ...props.visibility };
-  const disabledFields = { ...defaultDisabledInit, ...props.disabled };
+  // default visibility all true
+  const defaultValueFields = { ...defaultValueInit, ...props.defaultValues }
+  const visibilityFields = { ...defaultVisibilityInit, ...props.visibility }
+  const disabledFields = { ...defaultDisabledInit, ...props.disabled }
 
   const {
     register,
@@ -104,86 +103,86 @@ const UserForm = (props: UserFormInterface): JSX.Element => {
     control,
     handleSubmit,
     watch,
-    formState: { isSubmitting, errors },
+    formState: { isSubmitting, errors }
   } = useForm<IFormValueInterface>({
     defaultValues: defaultValueFields,
-    resolver: yupResolver(props.schema),
-  });
+    resolver: yupResolver(props.schema)
+  })
 
   // useForm watch values
-  const selectedState = watch("state") as any;
-  const selectedMunicipality = watch("municipality") as any;
+  const selectedState = watch('state') as any
+  const selectedMunicipality = watch('municipality') as any
 
   // useQuery values
-  const queryStates = useQuery("states", getAllStates, {
-    enabled: false,
-  });
+  const queryStates = useQuery('states', getAllStates, {
+    enabled: false
+  })
 
   const queryMunicipalities = useQuery(
-    ["municipalities"],
-    () => getMunicipalitiesByState(selectedState?.value),
+    ['municipalities'],
+    async () => await getMunicipalitiesByState(selectedState?.value),
     {
-      enabled: false,
+      enabled: false
     }
-  );
+  )
 
   const queryParishes = useQuery(
-    ["parishes"],
-    () => getParishesByMunicipality(selectedMunicipality?.value),
+    ['parishes'],
+    async () => await getParishesByMunicipality(selectedMunicipality?.value),
     {
-      enabled: false,
+      enabled: false
     }
-  );
+  )
 
   useEffect(() => {
-    queryStates.refetch();
-  }, []);
+    void queryStates.refetch()
+  }, [])
 
   useEffect(() => {
     if (selectedState && !isSubmitting) {
-      resetField("municipality");
-      resetField("parish");
-      queryParishes.remove();
-      queryMunicipalities.refetch();
+      resetField('municipality')
+      resetField('parish')
+      queryParishes.remove()
+      void queryMunicipalities.refetch()
     }
-  }, [selectedState]);
+  }, [selectedState])
 
   useEffect(() => {
     if (selectedMunicipality && !isSubmitting) {
-      resetField("parish");
-      queryParishes.refetch();
+      resetField('parish')
+      void queryParishes.refetch()
     }
-  }, [selectedMunicipality]);
+  }, [selectedMunicipality])
 
   const onSubmit = (data: IFormValueInterface) => {
-    props.onSubmit(data);
-  };
+    props.onSubmit(data)
+  }
 
-  //others functions
+  // others functions
 
   const getStateOptions = () => {
     return (
       queryStates.data?.data.map((option) => {
-        return { label: option.name, value: option.id };
+        return { label: option.name, value: option.id }
       }) ?? []
-    );
-  };
+    )
+  }
 
   const getMunicipalityOptions = () => {
     return (
       queryMunicipalities.data?.data.map((option) => {
-        return { label: option.name, value: option.id };
+        return { label: option.name, value: option.id }
       }) ?? []
-    );
-  };
+    )
+  }
 
   const getParishOptions = () => {
     return (
       queryParishes.data?.data.map((option) => {
-        return { label: option.name, value: option.id };
+        return { label: option.name, value: option.id }
       }) ?? []
-    );
-  };
+    )
+  }
 
   return (
     <Box
@@ -196,7 +195,7 @@ const UserForm = (props: UserFormInterface): JSX.Element => {
         {visibilityFields.email && (
           <Grid item xs={12}>
             <TextField
-              {...register("email")}
+              {...register('email')}
               disabled={disabledFields.email}
               error={!!errors.email}
               helperText={errors.email?.message}
@@ -211,7 +210,7 @@ const UserForm = (props: UserFormInterface): JSX.Element => {
         {visibilityFields.password && (
           <Grid item xs={12}>
             <TextField
-              {...register("password")}
+              {...register('password')}
               disabled={disabledFields.password}
               error={!!errors.password}
               helperText={errors.password?.message}
@@ -223,7 +222,7 @@ const UserForm = (props: UserFormInterface): JSX.Element => {
               autoComplete="new-password"
             />
 
-            <Alert severity={"info"} className="mt-4">
+            <Alert severity={'info'} className="mt-4">
               La contraseña debe tener entre 8 y 20 caracteres.
             </Alert>
           </Grid>
@@ -232,7 +231,7 @@ const UserForm = (props: UserFormInterface): JSX.Element => {
         {visibilityFields.firstName && (
           <Grid item xs={12} sm={6}>
             <TextField
-              {...register("firstName")}
+              {...register('firstName')}
               disabled={disabledFields.firstName}
               autoComplete="given-name"
               name="firstName"
@@ -248,7 +247,7 @@ const UserForm = (props: UserFormInterface): JSX.Element => {
         {visibilityFields.lastName && (
           <Grid item xs={12} sm={6}>
             <TextField
-              {...register("lastName")}
+              {...register('lastName')}
               disabled={disabledFields.lastName}
               error={!!errors.lastName}
               helperText={errors.lastName?.message}
@@ -262,7 +261,7 @@ const UserForm = (props: UserFormInterface): JSX.Element => {
         {visibilityFields.birthDate && (
           <Grid item xs={12}>
             <DatePicker
-              maxDate={dayjs().subtract(18, "year").toDate()}
+              maxDate={dayjs().subtract(18, 'year').toDate()}
               disabled={disabledFields.birthDate}
               control={control}
               errors={errors}
@@ -275,7 +274,7 @@ const UserForm = (props: UserFormInterface): JSX.Element => {
           <Grid item xs={12}>
             <TextField
               disabled={disabledFields.dni}
-              {...register("dni")}
+              {...register('dni')}
               error={!!errors.dni}
               helperText={errors.dni?.message}
               fullWidth
@@ -285,7 +284,7 @@ const UserForm = (props: UserFormInterface): JSX.Element => {
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">VE</InputAdornment>
-                ),
+                )
               }}
             />
           </Grid>
@@ -295,7 +294,7 @@ const UserForm = (props: UserFormInterface): JSX.Element => {
             <AutocompleteHookForm
               disabled={disabledFields.state}
               control={control}
-              register={register("state")}
+              register={register('state')}
               loading={queryStates.isLoading}
               name="state"
               label="Estado"
@@ -309,7 +308,7 @@ const UserForm = (props: UserFormInterface): JSX.Element => {
             <AutocompleteHookForm
               disabled={disabledFields.municipality}
               control={control}
-              register={register("municipality")}
+              register={register('municipality')}
               loading={queryMunicipalities.isLoading}
               name="municipality"
               label="Municipio"
@@ -323,7 +322,7 @@ const UserForm = (props: UserFormInterface): JSX.Element => {
             <AutocompleteHookForm
               disabled={disabledFields.parish}
               control={control}
-              register={register("parish")}
+              register={register('parish')}
               loading={queryParishes.isLoading}
               name="parish"
               label="Parroquia"
@@ -336,7 +335,7 @@ const UserForm = (props: UserFormInterface): JSX.Element => {
           <Grid item xs={12}>
             <TextField
               disabled={disabledFields.address}
-              {...register("address")}
+              {...register('address')}
               error={!!errors.address}
               helperText={errors.address?.message}
               fullWidth
@@ -362,7 +361,7 @@ const UserForm = (props: UserFormInterface): JSX.Element => {
         {props.submitText}
       </Button>
     </Box>
-  );
-};
+  )
+}
 
-export default UserForm;
+export default UserForm

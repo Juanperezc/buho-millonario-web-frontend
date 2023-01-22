@@ -1,33 +1,32 @@
-import { useEffect } from "react";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { Copyright } from "@components/Copyright/Copyright";
-import { useAppDispatch, useAppSelector } from "@app/hooks";
-import { userLoginAction } from "@features/user/userActions";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
+import { useEffect, useMemo } from 'react'
+import Button from '@mui/material/Button'
+import CssBaseline from '@mui/material/CssBaseline'
+import TextField from '@mui/material/TextField'
+import Link from '@mui/material/Link'
+import Grid from '@mui/material/Grid'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import Container from '@mui/material/Container'
+import { Copyright } from '@components/Copyright/Copyright'
+import { useAppDispatch, useAppSelector } from '@app/hooks'
+import { userLoginAction } from '@features/user/userActions'
+import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
 import {
   EMAIL_REQUIRED_YUP,
   PASSWORD_MAX_YUP,
   PASSWORD_MIN_YUP,
-  PASSWORD_REQUIRED_YUP,
-} from "shared/constants/yup.constants";
-import { swalClose, swalLoading, swalSuccess } from "@utils/swal.util";
-import { toastError } from "@utils/toast.util";
-import { useNavigate } from "react-router-dom";
-import { useMemo } from "react";
-import { SUCCESS_PASSWORD_RESET } from "@constants/success.constants";
+  PASSWORD_REQUIRED_YUP
+} from 'shared/constants/yup.constants'
+import { swalClose, swalLoading, swalSuccess } from '@utils/swal.util'
+import { toastError } from '@utils/toast.util'
+import { useNavigate } from 'react-router-dom'
+import { SUCCESS_PASSWORD_RESET } from '@constants/success.constants'
 
 interface IFormInputs {
-  email: string;
-  password: string;
+  email: string
+  password: string
 }
 
 const schema = yup
@@ -37,62 +36,61 @@ const schema = yup
       .string()
       .required(PASSWORD_REQUIRED_YUP)
       .min(8, PASSWORD_MIN_YUP)
-      .max(16, PASSWORD_MAX_YUP),
+      .max(16, PASSWORD_MAX_YUP)
   })
-  .required();
+  .required()
 
-export default function SignInForm() {
+export default function SignInForm () {
   const { loading, error, success, userInfo } = useAppSelector(
     (state) => state.user
-  );
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const urlParams = new URLSearchParams(window.location.search);
-  const urlError = urlParams.get("error");
-  const resetParam = urlParams.get("reset");
+  )
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+  const urlParams = new URLSearchParams(window.location.search)
+  const urlError = urlParams.get('error')
+  const resetParam = urlParams.get('reset')
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors }
   } = useForm<IFormInputs>({
-    resolver: yupResolver(schema),
-  });
+    resolver: yupResolver(schema)
+  })
 
   useMemo(() => {
     if (urlError != null) {
-      toastError("Email o contraseña incorrecto");
+      toastError('Email o contraseña incorrecto')
     }
 
     if (resetParam) {
-      swalSuccess(SUCCESS_PASSWORD_RESET);
+      swalSuccess(SUCCESS_PASSWORD_RESET)
     }
-  }, [urlError, resetParam]);
+  }, [urlError, resetParam])
 
   const onSubmit = (data: IFormInputs) => {
-    dispatch(userLoginAction(data));
-  };
+    dispatch(userLoginAction(data))
+  }
 
   useEffect(() => {
     if (success && userInfo) {
-      swalClose();
-      navigate("/dashboard/home");
+      swalClose()
+      navigate('/dashboard/home')
     }
-  }, [success, userInfo]);
+  }, [success, userInfo])
 
   useEffect(() => {
-    if (error){
-      swalClose();
+    if (error) {
+      swalClose()
     }
-    if (error === "Unauthorized") {
-      swalClose();
-      toastError("Email o contraseña incorrecto");
+    if (error === 'Unauthorized') {
+      swalClose()
+      toastError('Email o contraseña incorrecto')
     }
-
-  }, [error]);
+  }, [error])
 
   useEffect(() => {
-    if (loading) swalLoading(); 
-  }, [loading]);
+    if (loading) swalLoading()
+  }, [loading])
 
   return (
     <Container component="main" maxWidth="xs">
@@ -100,9 +98,9 @@ export default function SignInForm() {
       <Box
         sx={{
           marginTop: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center'
         }}
       >
         <Typography component="h1" variant="h5">
@@ -115,9 +113,9 @@ export default function SignInForm() {
           sx={{ mt: 1 }}
         >
           <TextField
-            {...register("email")}
+            {...register('email')}
             margin="normal"
-            error={errors.email ? true : false}
+            error={!!errors.email}
             helperText={errors.email?.message}
             required
             fullWidth
@@ -127,9 +125,9 @@ export default function SignInForm() {
             autoFocus
           />
           <TextField
-            {...register("password")}
+            {...register('password')}
             margin="normal"
-            error={errors.password ? true : false}
+            error={!!errors.password}
             helperText={errors.password?.message}
             required
             fullWidth
@@ -162,5 +160,5 @@ export default function SignInForm() {
       </Box>
       <Copyright sx={{ mt: 8, mb: 4 }} />
     </Container>
-  );
+  )
 }

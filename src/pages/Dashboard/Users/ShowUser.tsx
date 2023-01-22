@@ -1,26 +1,26 @@
-import { Box } from "@mui/system";
-import UserForm from "@components/Forms/UserForm/UserForm";
-import { Divider, Grid, LinearProgress } from "@mui/material";
+import { Box } from '@mui/system'
+import UserForm from '@components/Forms/UserForm/UserForm'
+import { Divider, Grid, LinearProgress } from '@mui/material'
 
-import { userSchema } from "@schemas/user.schema";
-import { useQuery } from "react-query";
-import { showUser } from "@services/userService";
-import { useParams } from "react-router-dom";
+import { userSchema } from '@schemas/user.schema'
+import { useQuery } from 'react-query'
+import { showUser } from '@services/userService'
+import { useParams } from 'react-router-dom'
 
-const schema = userSchema;
+const schema = userSchema
 
 const ShowUser = (): JSX.Element => {
-  const queryParam = useParams<{ id: string }>();
+  const queryParam = useParams<{ id: string }>()
   const showUserQuery = useQuery(
-    "show-user",
-    () => showUser(queryParam.id ?? ""),
+    'show-user',
+    async () => await showUser(queryParam.id ?? ''),
     {
       enabled: true,
-      retry: 0,
+      retry: 0
     }
-  );
+  )
 
-  const userInfo = showUserQuery.data?.data;
+  const userInfo = showUserQuery.data?.data
 
   const defaultValues = {
     firstName: userInfo?.firstName,
@@ -33,36 +33,38 @@ const ShowUser = (): JSX.Element => {
     state: userInfo?.parish
       ? {
           label: userInfo?.parish.municipality.state.name,
-          value: userInfo?.parish.municipality.state.id,
+          value: userInfo?.parish.municipality.state.id
         }
       : null,
     municipality: userInfo?.parish
       ? {
           label: userInfo?.parish.municipality.name,
-          value: userInfo?.parish.municipality.id,
+          value: userInfo?.parish.municipality.id
         }
       : null,
     parish: userInfo?.parish
       ? { label: userInfo?.parish.name, value: userInfo?.parish.id }
-      : null,
-  };
+      : null
+  }
 
   const onSubmit = () => {
-    window.location.href = "/dashboard/users/edit/" + queryParam.id;
-  };
+    window.location.href = '/dashboard/users/edit/' + queryParam.id
+  }
 
   return (
     <Box>
-      {showUserQuery.isLoading ? (
+      {showUserQuery.isLoading
+        ? (
         <LinearProgress />
-      ) : (
+          )
+        : (
         <>
           <UserForm
             schema={schema}
             onSubmit={onSubmit}
             defaultValues={defaultValues}
             visibility={{
-              password: false,
+              password: false
             }}
             disabled={{
               firstName: true,
@@ -75,7 +77,7 @@ const ShowUser = (): JSX.Element => {
               birthDate: true,
               state: true,
               municipality: true,
-              parish: true,
+              parish: true
             }}
             submitText="Editar perfil"
           />
@@ -86,8 +88,8 @@ const ShowUser = (): JSX.Element => {
             <Grid item xs={12}></Grid>
           </Grid>
         </>
-      )}
+          )}
     </Box>
-  );
-};
-export default ShowUser;
+  )
+}
+export default ShowUser

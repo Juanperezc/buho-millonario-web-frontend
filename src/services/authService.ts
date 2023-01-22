@@ -4,52 +4,52 @@ import {
   ResetPasswordInterface,
   SignInUserInterface,
   SignUpUserInterface,
-  UpdateProfileInterface,
-} from "@interfaces/forms/user.interface";
-import { axiosInstance } from "config/http";
+  UpdateProfileInterface
+} from '@interfaces/forms/user.interface'
+import { axiosInstance } from 'config/http'
 
-export const signUp = <T>(data: SignUpUserInterface) => {
-  return axiosInstance.post<T>(
-    process.env.REACT_APP_BASE_URL + "/auth/sign-up",
+export const signUp = async <T>(data: SignUpUserInterface) => {
+  return await axiosInstance.post<T>(
+    process.env.REACT_APP_BASE_URL + '/auth/sign-up',
     data
-  );
-};
+  )
+}
 
-export const signIn = <T>(data: SignInUserInterface) => {
-  return axiosInstance.post<T>(
-    process.env.REACT_APP_BASE_URL + "/auth/sign-in",
+export const signIn = async <T>(data: SignInUserInterface) => {
+  return await axiosInstance.post<T>(
+    process.env.REACT_APP_BASE_URL + '/auth/sign-in',
     data
-  );
-};
+  )
+}
 
-export const getProfile = <T>() => {
-  return axiosInstance.get<T>(process.env.REACT_APP_BASE_URL + "/auth/profile");
-};
+export const getProfile = async <T>() => {
+  return await axiosInstance.get<T>(process.env.REACT_APP_BASE_URL + '/auth/profile')
+}
 
-export const updateProfile = <T>(data: UpdateProfileInterface) => {
-  return axiosInstance.put<T>(
-    process.env.REACT_APP_BASE_URL + "/auth/profile",
+export const updateProfile = async <T>(data: UpdateProfileInterface) => {
+  return await axiosInstance.put<T>(
+    process.env.REACT_APP_BASE_URL + '/auth/profile',
     data
-  );
-};
+  )
+}
 
-export const forgotPassword = <T>(data: ForgotPasswordInterface) => {
-  return axiosInstance.post<T>(
-    process.env.REACT_APP_BASE_URL + "/auth/forgot-password",
+export const forgotPassword = async <T>(data: ForgotPasswordInterface) => {
+  return await axiosInstance.post<T>(
+    process.env.REACT_APP_BASE_URL + '/auth/forgot-password',
     data
-  );
-};
+  )
+}
 
-export const resetPassword = <T>(data: ResetPasswordInterface) => {
-  return axiosInstance.post<T>(
-    process.env.REACT_APP_BASE_URL + "/auth/reset-password",
+export const resetPassword = async <T>(data: ResetPasswordInterface) => {
+  return await axiosInstance.post<T>(
+    process.env.REACT_APP_BASE_URL + '/auth/reset-password',
     data
-  );
-};
+  )
+}
 
-export const closeMyAccount = <T>(data: CloseAccountInterface) => {
-  return axiosInstance.post<T>(
-    process.env.REACT_APP_BASE_URL + "/auth/close-account",
+export const closeMyAccount = async <T>(data: CloseAccountInterface) => {
+  return await axiosInstance.post<T>(
+    process.env.REACT_APP_BASE_URL + '/auth/close-account',
     data
-  );
-};
+  )
+}

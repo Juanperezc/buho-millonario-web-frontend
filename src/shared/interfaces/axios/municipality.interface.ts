@@ -1,9 +1,9 @@
-import { StateInterface } from "./state.interface";
+import { StateInterface } from './state.interface'
 
-export type MunicipalityInterface = {
-  id: number;
-  name: string;
+export interface MunicipalityInterface {
+  id: number
+  name: string
   state: StateInterface
-  createdAt: string;
-  updatedAt: string;
-};
+  createdAt: string
+  updatedAt: string
+}

@@ -1,26 +1,25 @@
-import { AutocompleteInterface } from "@interfaces/components/autocomplete.interface";
-import { Autocomplete, CircularProgress, TextField } from "@mui/material";
-import { Fragment } from "react";
+import { AutocompleteInterface } from '@interfaces/components/autocomplete.interface'
+import { Autocomplete, CircularProgress, TextField } from '@mui/material'
+import { Fragment } from 'react'
 import {
   Control,
   Controller,
   FieldErrors,
-  UseFormRegister,
-  UseFormRegisterReturn,
-} from "react-hook-form";
+  UseFormRegisterReturn
+} from 'react-hook-form'
 
 interface ComponentInterface {
-  control: Control<any>;
-  register: UseFormRegisterReturn<any>;
-  errors: FieldErrors<any>;
-  name: string;
-  label: string;
-  loading: boolean;
-  options: AutocompleteInterface[];
-  disabled?: boolean;
+  control: Control<any>
+  register: UseFormRegisterReturn<any>
+  errors: FieldErrors<any>
+  name: string
+  label: string
+  loading: boolean
+  options: AutocompleteInterface[]
+  disabled?: boolean
 }
 
-export default function AutocompleteHookForm(props: ComponentInterface) {
+export default function AutocompleteHookForm (props: ComponentInterface) {
   return (
     <Controller
       control={props.control}
@@ -28,12 +27,12 @@ export default function AutocompleteHookForm(props: ComponentInterface) {
       render={({ field: { onChange, value } }) => (
         <Autocomplete
           disabled={props.disabled}
-          noOptionsText={"Sin resultados"}
+          noOptionsText={'Sin resultados'}
           disableClearable
           loading={props.loading}
           value={value || null}
           onChange={(_event, item) => {
-            onChange(item);
+            onChange(item)
           }}
           loadingText="Cargando..."
           disablePortal
@@ -48,7 +47,7 @@ export default function AutocompleteHookForm(props: ComponentInterface) {
               label={props.label}
               InputProps={{
                 ...params.InputProps,
-                autoComplete: "off",
+                autoComplete: 'off',
                 endAdornment: (
                   <Fragment>
                     {props.loading && (
@@ -56,12 +55,12 @@ export default function AutocompleteHookForm(props: ComponentInterface) {
                     )}
                     {params.InputProps.endAdornment}
                   </Fragment>
-                ),
+                )
               }}
             />
           )}
         />
       )}
     />
-  );
+  )
 }

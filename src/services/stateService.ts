@@ -1,15 +1,15 @@
-import { axiosInstance } from "config/http";
+import { axiosInstance } from 'config/http'
 
-export type StateInterface = {
-  id: number;
-  name: string;
-  country: string;
-  createdAt: string;
-  updatedAt: string;
-};
+export interface StateInterface {
+  id: number
+  name: string
+  country: string
+  createdAt: string
+  updatedAt: string
+}
 
-export const getAllStates = () => {
-  return axiosInstance.get<StateInterface[]>(
-    process.env.REACT_APP_BASE_URL + "/state"
-  );
-};
+export const getAllStates = async () => {
+  return await axiosInstance.get<StateInterface[]>(
+    process.env.REACT_APP_BASE_URL + '/state'
+  )
+}

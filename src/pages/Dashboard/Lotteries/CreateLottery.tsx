@@ -1,44 +1,44 @@
 import LotteryForm, {
-  ILotteryFormValueInterface,
-} from "@components/Forms/Lottery/LotteryForm";
-import lotterySchema from "@schemas/lottery.schema";
-import { createLottery } from "@services/lotteryService";
-import { swalError, swalLoading, swalSuccess } from "@utils/swal.util";
-import { useEffect } from "react";
-import { useMutation } from "react-query";
+  ILotteryFormValueInterface
+} from '@components/Forms/Lottery/LotteryForm'
+import lotterySchema from '@schemas/lottery.schema'
+import { createLottery } from '@services/lotteryService'
+import { swalError, swalLoading, swalSuccess } from '@utils/swal.util'
+import { useEffect } from 'react'
+import { useMutation } from 'react-query'
 
-const schema = lotterySchema;
+const schema = lotterySchema
 
 const CreateLottery = () => {
   const handleMutationCreateLottery = useMutation(
-    (data: ILotteryFormValueInterface) => {
-      return createLottery(data);
+    async (data: ILotteryFormValueInterface) => {
+      return await createLottery(data)
     }
-  );
+  )
 
   useEffect(() => {
     if (handleMutationCreateLottery.isSuccess) {
-      swalSuccess("Sorteo creado con éxito");
-      const id = handleMutationCreateLottery.data?.data?.id;
-      window.location.href = `/dashboard/lotteries/edit/${id}`;
+      swalSuccess('Sorteo creado con éxito')
+      const id = handleMutationCreateLottery.data?.data?.id
+      window.location.href = `/dashboard/lotteries/edit/${id}`
     }
     if (handleMutationCreateLottery.isError) {
-      swalError("Error al crear el sorteo");
+      swalError('Error al crear el sorteo')
     }
     if (handleMutationCreateLottery.isLoading) {
-      swalLoading("Creando sorteo");
+      swalLoading('Creando sorteo')
     }
-  }, [handleMutationCreateLottery.status]);
+  }, [handleMutationCreateLottery.status])
 
   const onSubmit = (data: ILotteryFormValueInterface) => {
-    handleMutationCreateLottery.mutate(data);
-  };
+    handleMutationCreateLottery.mutate(data)
+  }
 
   return (
     <>
       <LotteryForm schema={schema} onSubmit={onSubmit} submitText="Crear" />
     </>
-  );
-};
+  )
+}
 
-export default CreateLottery;
+export default CreateLottery

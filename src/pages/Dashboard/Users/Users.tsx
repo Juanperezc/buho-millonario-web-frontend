@@ -1,63 +1,62 @@
-import { Box, Grid as GridMaterial } from "@mui/material";
-import { UserInterface } from "@interfaces/axios/user.interface";
-import { Grid, h } from "gridjs";
-import { esES } from "gridjs/l10n";
-import { useEffect, useRef } from "react";
-import { trimString } from "@utils/global.util";
+import { Box, Grid as GridMaterial } from '@mui/material'
+import { UserInterface } from '@interfaces/axios/user.interface'
+import { Grid, h } from 'gridjs'
+import { esES } from 'gridjs/l10n'
+import { useEffect, useRef } from 'react'
+import { trimString } from '@utils/global.util'
 const Users = () => {
-  const tableRef: any = useRef(<div></div>);
+  const tableRef: any = useRef(<div></div>)
   const gridJs = new Grid({
     className: {
-      table: "w-full",
+      table: 'w-full'
     },
     columns: [
       {
-        name: "Id",
-        hidden: true,
+        name: 'Id',
+        hidden: true
       },
-      "Nombre",
+      'Nombre',
       {
-        name: "Email",
+        name: 'Email',
         formatter: (_cell) => {
-          return trimString(_cell?.toString() ?? "", 22);
-        },
+          return trimString(_cell?.toString() ?? '', 22)
+        }
       },
-      "Cédula",
-      "Teléfono",
+      'Cédula',
+      'Teléfono',
       {
-        name: "Acciones",
+        name: 'Acciones',
         formatter: (_cell, row) => {
           return [
             h(
-              "button",
+              'button',
               {
                 className:
-                  "py-2 mb-4 px-4 border rounded-md text-white bg-primary",
+                  'py-2 mb-4 px-4 border rounded-md text-white bg-primary',
                 onClick: () => {
-                  showUser(row.cells[0].data as number);
-                },
+                  showUser(row.cells[0].data as number)
+                }
               },
-              "Ver"
+              'Ver'
             ),
             h(
-              "button",
+              'button',
               {
                 className:
-                  "py-2 mb-4 px-4 border rounded-md text-white bg-warning",
+                  'py-2 mb-4 px-4 border rounded-md text-white bg-warning',
                 onClick: () => {
-                  editUser(row.cells[0].data as number);
-                },
+                  editUser(row.cells[0].data as number)
+                }
               },
-              "Editar"
-            ),
-          ];
-        },
-      },
+              'Editar'
+            )
+          ]
+        }
+      }
     ],
     resizable: true,
     pagination: {
-      enabled: true,
-      limit: 8,
+      limit: 8
     },
 
     search: true,
@@ -65,32 +64,32 @@ const Users = () => {
     language: esES,
     server: {
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('userToken')}`
       },
-      url: process.env.REACT_APP_BASE_URL + "/user",
+      url: process.env.REACT_APP_BASE_URL + '/user',
       then: (data: UserInterface[]) =>
         data.map((user) => [
           user.id,
           user.firstName,
           user.email,
           user.dni,
-          user.phone,
-        ]),
-    },
-  });
+          user.phone
+        ])
+    }
+  })
 
   const showUser = (id: number) => {
-    window.location.href = "/dashboard/users/show/" + id;
-  };
+    window.location.href = '/dashboard/users/show/' + id
+  }
 
   const editUser = (id: number) => {
-    window.location.href = "/dashboard/users/edit/" + id;
-  };
+    window.location.href = '/dashboard/users/edit/' + id
+  }
 
   useEffect(() => {
-    gridJs.render(tableRef.current);
-  });
+    gridJs.render(tableRef.current)
+  })
 
   return (
     <Box>
@@ -100,6 +99,6 @@ const Users = () => {
         </GridMaterial>
       </GridMaterial>
     </Box>
-  );
-};
-export default Users;
+  )
+}
+export default Users

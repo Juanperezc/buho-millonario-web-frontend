@@ -1,17 +1,17 @@
-import { TextField } from "@mui/material";
-import { DesktopDatePicker } from "@mui/x-date-pickers";
-import { Control, Controller, FieldErrors } from "react-hook-form";
+import { TextField } from '@mui/material'
+import { DesktopDatePicker } from '@mui/x-date-pickers'
+import { Control, Controller, FieldErrors } from 'react-hook-form'
 interface ComponentInterface {
-  control: Control<any>;
-  errors: FieldErrors<any>;
-  name: string;
-  label: string;
-  disabled?: boolean;
-  maxDate?: Date;
-  minDate?: Date;
+  control: Control<any>
+  errors: FieldErrors<any>
+  name: string
+  label: string
+  disabled?: boolean
+  maxDate?: Date
+  minDate?: Date
 }
 
-export default function DatePicker({
+export default function DatePicker ({
   control,
   name,
   errors,
@@ -26,7 +26,7 @@ export default function DatePicker({
       control={control}
       render={({ field: { onChange, value } }) => (
         <DesktopDatePicker
-        
+
           maxDate={maxDate}
           minDate={minDate}
           disabled={disabled}
@@ -45,5 +45,5 @@ export default function DatePicker({
         />
       )}
     />
-  );
+  )
 }

@@ -13,9 +13,9 @@ import {
   REWARD_5_DIGIT_REQUIRED_YUP,
   START_DATE_REQUIRED_YUP,
   TICKET_PRICE_REQUIRED_YUP,
-  TITLE_REQUIRED_YUP,
-} from "@constants/yup.constants";
-import * as yup from "yup";
+  TITLE_REQUIRED_YUP
+} from '@constants/yup.constants'
+import * as yup from 'yup'
 
 const lotterySchema = yup
   .object({
@@ -60,11 +60,11 @@ const lotterySchema = yup
       .date()
       .required(FINISH_DATE_REQUIRED_YUP)
       .when(
-        "startDate",
+        'startDate',
         (startDate, yup) =>
-          startDate && yup.min(startDate, FINISH_DATE_MIN_STARTED)
-      ),
+          (Boolean(startDate)) && yup.min(startDate, FINISH_DATE_MIN_STARTED)
+      )
   })
-  .required();
+  .required()
 
-export default lotterySchema;
+export default lotterySchema

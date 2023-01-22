@@ -1,6 +1,6 @@
-import { Link, Typography } from "@mui/material";
+import { Link, Typography } from '@mui/material'
 
-export function Copyright(props: any) {
+export function Copyright (props: any) {
   return (
     <Typography
       variant="body2"
@@ -8,12 +8,12 @@ export function Copyright(props: any) {
       align="center"
       {...props}
     >
-      {"Copyright © "}
+      {'Copyright © '}
       <Link color="inherit" href="https://mui.com/">
         Búho Millonario
-      </Link>{" "}
+      </Link>{' '}
       {new Date().getFullYear()}
-      {"."}
+      {'.'}
     </Typography>
-  );
+  )
 }

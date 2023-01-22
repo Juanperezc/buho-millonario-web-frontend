@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react'
 
-import { useQuery } from "react-query";
-import { LotteryInterface } from "@interfaces/axios/lottery.interface";
-import { showLottery } from "@services/lotteryService";
+import { useQuery } from 'react-query'
+import { LotteryInterface } from '@interfaces/axios/lottery.interface'
+import { showLottery } from '@services/lotteryService'
 import {
   Button,
   Card,
@@ -10,32 +10,32 @@ import {
   Divider,
   Grid,
   LinearProgress,
-  Typography,
-} from "@mui/material";
-import { Box } from "@mui/system";
-import { useParams } from "react-router-dom";
-import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
+  Typography
+} from '@mui/material'
+import { Box } from '@mui/system'
+import { useParams } from 'react-router-dom'
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn'
 
 const ShowLottery: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
+  const { id } = useParams<{ id: string }>()
 
   const { data, status, refetch } = useQuery(
-    ["lottery"],
-    () => showLottery(id ?? ""),
+    ['lottery'],
+    async () => await showLottery(id ?? ''),
     {
-      enabled: false,
+      enabled: false
     }
-  );
+  )
 
   useEffect(() => {
     if (id) {
-      refetch();
+      void refetch()
     }
-  }, [id]);
-  const lottery = data?.data as unknown as LotteryInterface;
+  }, [id])
+  const lottery = data?.data as unknown as LotteryInterface
 
-  if (status === "loading" || lottery === undefined) {
-    return <LinearProgress />;
+  if (status === 'loading' || lottery === undefined) {
+    return <LinearProgress />
   } else {
     return (
       <Box>
@@ -116,8 +116,8 @@ const ShowLottery: React.FC = () => {
           </Grid>
         </Grid>
       </Box>
-    );
+    )
   }
-};
+}
 
-export default ShowLottery;
+export default ShowLottery

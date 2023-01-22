@@ -1,15 +1,13 @@
-import { useEffect } from "react";
-import Avatar from "@mui/material/Avatar";
-import CssBaseline from "@mui/material/CssBaseline";
-import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { Copyright } from "@components/Copyright/Copyright";
-import { registerUserAction } from "@features/user/userActions";
-import { useAppDispatch, useAppSelector } from "@app/hooks";
-import { useNavigate } from "react-router";
-import { swalClose, swalLoading } from "@utils/swal.util";
+import { useEffect } from 'react'
+import CssBaseline from '@mui/material/CssBaseline'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import Container from '@mui/material/Container'
+import { Copyright } from '@components/Copyright/Copyright'
+import { registerUserAction } from '@features/user/userActions'
+import { useAppDispatch, useAppSelector } from '@app/hooks'
+import { useNavigate } from 'react-router'
+import { swalClose, swalLoading } from '@utils/swal.util'
 import {
   BIRTH_DATE_REQUIRED_YUP,
   DNI_REQUIRED_YUP,
@@ -21,17 +19,15 @@ import {
   PASSWORD_MAX_YUP,
   PASSWORD_MIN_YUP,
   PASSWORD_REQUIRED_YUP,
-  STATE_REQUIRED_YUP,
-} from "@constants/yup.constants";
-import * as yup from "yup";
+  STATE_REQUIRED_YUP
+} from '@constants/yup.constants'
+import * as yup from 'yup'
 import UserForm, {
-  IFormValueInterface,
-} from "@components/Forms/UserForm/UserForm";
-import { SignUpUserInterface } from "@interfaces/forms/user.interface";
-import _ from "lodash";
-import dayjs from "dayjs";
-import { Grid, Link } from "@mui/material";
-
+  IFormValueInterface
+} from '@components/Forms/UserForm/UserForm'
+import { SignUpUserInterface } from '@interfaces/forms/user.interface'
+import dayjs from 'dayjs'
+import { Grid, Link } from '@mui/material'
 
 const schema = yup
   .object({
@@ -47,24 +43,24 @@ const schema = yup
     municipality: yup.mixed().required(MUNICIPALITY_REQUIRED_YUP),
     parish: yup.mixed().required(PARISH_REQUIRED_YUP),
     birthDate: yup.date().required(BIRTH_DATE_REQUIRED_YUP).nullable(),
-    dni: yup.string().required(DNI_REQUIRED_YUP),
+    dni: yup.string().required(DNI_REQUIRED_YUP)
   })
-  .required();
+  .required()
 
-export default function SignUpForm(): JSX.Element {
-  const { loading, userInfo, success } = useAppSelector((state) => state.user);
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
+export default function SignUpForm (): JSX.Element {
+  const { loading, userInfo, success } = useAppSelector((state) => state.user)
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
   useEffect(() => {
     if (success && userInfo) {
-      navigate("/dashboard/home");
+      navigate('/dashboard/home')
     }
-  }, [success, userInfo]);
+  }, [success, userInfo])
 
   useEffect(() => {
-    if (loading) swalLoading();
-    else swalClose();
-  }, [loading]);
+    if (loading) swalLoading()
+    else swalClose()
+  }, [loading])
 
   const onSubmit = (data: IFormValueInterface) => {
     const httpParam: SignUpUserInterface = {
@@ -74,21 +70,21 @@ export default function SignUpForm(): JSX.Element {
       email: data.email,
       firstName: data.firstName,
       lastName: data.lastName,
-      password: data.password,
-    };
-    dispatch(registerUserAction(httpParam));
-  };
+      password: data.password
+    }
+    dispatch(registerUserAction(httpParam))
+  }
 
   return (
-  
+
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
           sx={{
             marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center'
           }}
         >
           <Typography component="h1" variant="h5">
@@ -111,5 +107,5 @@ export default function SignUpForm(): JSX.Element {
         <Copyright sx={{ mt: 5 }} />
       </Container>
 
-  );
+  )
 }

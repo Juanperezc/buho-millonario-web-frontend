@@ -1,46 +1,46 @@
-import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, Grid, InputAdornment, TextField } from "@mui/material";
-import { useForm } from "react-hook-form";
-import Box from "@mui/material/Box";
-import DatePicker from "@components/HookForm/DatePicker";
-import dayjs from "dayjs";
+import { yupResolver } from '@hookform/resolvers/yup'
+import { Button, Grid, InputAdornment, TextField } from '@mui/material'
+import { useForm } from 'react-hook-form'
+import Box from '@mui/material/Box'
+import DatePicker from '@components/HookForm/DatePicker'
+import dayjs from 'dayjs'
 
-type IFormStateInterface = {
-  title: boolean;
-  description: boolean;
-  ticketPrice: boolean;
-  reward1Digits: boolean;
-  reward2Digits: boolean;
-  reward3Digits: boolean;
-  reward4Digits: boolean;
-  reward5Digits: boolean;
-  startDate: boolean;
-  finishDate: boolean;
-};
+interface IFormStateInterface {
+  title: boolean
+  description: boolean
+  ticketPrice: boolean
+  reward1Digits: boolean
+  reward2Digits: boolean
+  reward3Digits: boolean
+  reward4Digits: boolean
+  reward5Digits: boolean
+  startDate: boolean
+  finishDate: boolean
+}
 
 export interface ILotteryFormValueInterface {
-  title: string;
-  description: string;
-  ticketPrice: number;
-  reward1Digits: number;
-  reward2Digits: number;
-  reward3Digits: number;
-  reward4Digits: number;
-  reward5Digits: number;
-  startDate: Date;
-  finishDate: Date;
+  title: string
+  description: string
+  ticketPrice: number
+  reward1Digits: number
+  reward2Digits: number
+  reward3Digits: number
+  reward4Digits: number
+  reward5Digits: number
+  startDate: Date
+  finishDate: Date
 }
 interface LotteryFormInterface {
-  schema: any;
-  disabled?: Partial<IFormStateInterface>;
-  defaultValues?: Partial<ILotteryFormValueInterface>;
-  submitText: string;
-  onSubmit: (data: ILotteryFormValueInterface) => void;
+  schema: any
+  disabled?: Partial<IFormStateInterface>
+  defaultValues?: Partial<ILotteryFormValueInterface>
+  submitText: string
+  onSubmit: (data: ILotteryFormValueInterface) => void
 }
 
 const defaultValueInit: ILotteryFormValueInterface = {
-  title: "",
-  description: "",
+  title: '',
+  description: '',
   ticketPrice: 100,
   reward1Digits: 10,
   reward2Digits: 20,
@@ -48,8 +48,8 @@ const defaultValueInit: ILotteryFormValueInterface = {
   reward4Digits: 40,
   reward5Digits: 50,
   startDate: dayjs().toDate(),
-  finishDate: dayjs().add(1, "day").toDate(),
-};
+  finishDate: dayjs().add(1, 'day').toDate()
+}
 
 const defaultDisabledInit: IFormStateInterface = {
   title: false,
@@ -61,31 +61,31 @@ const defaultDisabledInit: IFormStateInterface = {
   reward4Digits: false,
   reward5Digits: false,
   startDate: false,
-  finishDate: false,
-};
+  finishDate: false
+}
 
 const LotteryForm = (props: LotteryFormInterface): JSX.Element => {
-  const defaultValueFields = { ...defaultValueInit, ...props.defaultValues };
-  const disabledFields = { ...defaultDisabledInit, ...props.disabled };
+  const defaultValueFields = { ...defaultValueInit, ...props.defaultValues }
+  const disabledFields = { ...defaultDisabledInit, ...props.disabled }
 
   const {
     register,
     control,
     watch,
     handleSubmit,
-    formState: { errors },
+    formState: { errors }
   } = useForm<ILotteryFormValueInterface>({
     defaultValues: defaultValueFields,
-    resolver: yupResolver(props.schema),
-  });
+    resolver: yupResolver(props.schema)
+  })
 
   // useForm watch values
 
   const onSubmit = (data: ILotteryFormValueInterface) => {
-    props.onSubmit(data);
-  };
+    props.onSubmit(data)
+  }
 
-  //others functions
+  // others functions
 
   return (
     <Box
@@ -97,7 +97,7 @@ const LotteryForm = (props: LotteryFormInterface): JSX.Element => {
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <TextField
-            {...register("title")}
+            {...register('title')}
             disabled={disabledFields.title}
             error={!!errors.title}
             helperText={errors.title?.message}
@@ -111,7 +111,7 @@ const LotteryForm = (props: LotteryFormInterface): JSX.Element => {
 
         <Grid item xs={12}>
           <TextField
-            {...register("description")}
+            {...register('description')}
             multiline
             rows={3}
             maxRows={3}
@@ -127,7 +127,7 @@ const LotteryForm = (props: LotteryFormInterface): JSX.Element => {
         </Grid>
         <Grid item xs={12}>
           <TextField
-            {...register("ticketPrice")}
+            {...register('ticketPrice')}
             disabled={disabledFields.ticketPrice}
             error={!!errors.ticketPrice}
             helperText={errors.ticketPrice?.message}
@@ -139,7 +139,7 @@ const LotteryForm = (props: LotteryFormInterface): JSX.Element => {
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">$</InputAdornment>
-              ),
+              )
             }}
           />
         </Grid>
@@ -155,7 +155,7 @@ const LotteryForm = (props: LotteryFormInterface): JSX.Element => {
         </Grid>
         <Grid item xs={12}>
           <DatePicker
-            minDate={watch("finishDate") ?? dayjs().toDate()}
+            minDate={watch('finishDate') ?? dayjs().toDate()}
             disabled={disabledFields.finishDate}
             control={control}
             errors={errors}
@@ -165,7 +165,7 @@ const LotteryForm = (props: LotteryFormInterface): JSX.Element => {
         </Grid>
         <Grid item xs={12}>
           <TextField
-            {...register("reward1Digits")}
+            {...register('reward1Digits')}
             disabled={disabledFields.reward1Digits}
             error={!!errors.reward1Digits}
             helperText={errors.reward1Digits?.message}
@@ -177,14 +177,14 @@ const LotteryForm = (props: LotteryFormInterface): JSX.Element => {
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">%</InputAdornment>
-              ),
+              )
             }}
           />
         </Grid>
 
         <Grid item xs={12}>
           <TextField
-            {...register("reward2Digits")}
+            {...register('reward2Digits')}
             disabled={disabledFields.reward2Digits}
             error={!!errors.reward2Digits}
             helperText={errors.reward2Digits?.message}
@@ -196,14 +196,14 @@ const LotteryForm = (props: LotteryFormInterface): JSX.Element => {
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">%</InputAdornment>
-              ),
+              )
             }}
           />
         </Grid>
 
         <Grid item xs={12}>
           <TextField
-            {...register("reward3Digits")}
+            {...register('reward3Digits')}
             disabled={disabledFields.reward3Digits}
             error={!!errors.reward3Digits}
             helperText={errors.reward3Digits?.message}
@@ -215,13 +215,13 @@ const LotteryForm = (props: LotteryFormInterface): JSX.Element => {
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">%</InputAdornment>
-              ),
+              )
             }}
           />
         </Grid>
         <Grid item xs={12}>
           <TextField
-            {...register("reward4Digits")}
+            {...register('reward4Digits')}
             disabled={disabledFields.reward4Digits}
             error={!!errors.reward4Digits}
             helperText={errors.reward4Digits?.message}
@@ -233,13 +233,13 @@ const LotteryForm = (props: LotteryFormInterface): JSX.Element => {
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">%</InputAdornment>
-              ),
+              )
             }}
           />
         </Grid>
         <Grid item xs={12}>
           <TextField
-            {...register("reward5Digits")}
+            {...register('reward5Digits')}
             disabled={disabledFields.reward5Digits}
             error={!!errors.reward5Digits}
             helperText={errors.reward5Digits?.message}
@@ -251,7 +251,7 @@ const LotteryForm = (props: LotteryFormInterface): JSX.Element => {
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">%</InputAdornment>
-              ),
+              )
             }}
           />
         </Grid>
@@ -260,7 +260,7 @@ const LotteryForm = (props: LotteryFormInterface): JSX.Element => {
         {props.submitText}
       </Button>
     </Box>
-  );
-};
+  )
+}
 
-export default LotteryForm;
+export default LotteryForm

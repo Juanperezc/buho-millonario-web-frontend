@@ -1,4 +1,4 @@
-export type AutocompleteInterface = {
-  label: string;
-  value: string | number;
-};
+export interface AutocompleteInterface {
+  label: string
+  value: string | number
+}

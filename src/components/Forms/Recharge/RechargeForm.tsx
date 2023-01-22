@@ -1,4 +1,4 @@
-import { yupResolver } from "@hookform/resolvers/yup";
+import { yupResolver } from '@hookform/resolvers/yup'
 import {
   Button,
   Grid,
@@ -8,43 +8,42 @@ import {
   FormControl,
   InputLabel,
   FormHelperText,
-  MenuItem,
-} from "@mui/material";
-import { useForm } from "react-hook-form";
-import Box from "@mui/material/Box";
-import * as Yup from "yup";
-import React from "react";
+  MenuItem
+} from '@mui/material'
+import { useForm } from 'react-hook-form'
+import Box from '@mui/material/Box'
+import * as Yup from 'yup'
+import React from 'react'
 
 const rechargeSchema = Yup.object().shape({
-  type: Yup.string().required("Selecciona el tipo de cuenta"),
+  type: Yup.string().required('Selecciona el tipo de cuenta'),
   amount: Yup.number()
-    .required("Ingresa el monto de la recarga")
+    .required('Ingresa el monto de la recarga')
     .positive()
-    .integer(),
-});
+    .integer()
+})
 
 export interface IRechargeFormValue {
-  type: string;
-  amount: number;
+  type: string
+  amount: number
 }
 
 interface IRechargeFormProps {
-  onSubmit: (data: IRechargeFormValue) => void;
+  onSubmit: (data: IRechargeFormValue) => void
 }
 
 const RechargeForm = (props: IRechargeFormProps): JSX.Element => {
   const {
     register,
-    control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors }
   } = useForm({
-    resolver: yupResolver(rechargeSchema),
-  });
+    resolver: yupResolver(rechargeSchema)
+  })
 
   const onSubmit = (data: IRechargeFormValue | any) => {
-    props.onSubmit(data);
-  };
+    props.onSubmit(data)
+  }
 
   return (
     <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)}>
@@ -55,13 +54,13 @@ const RechargeForm = (props: IRechargeFormProps): JSX.Element => {
               Tipo de cuenta
             </InputLabel>
             <Select
-              {...register("type")}
+              {...register('type')}
               error={!!errors.type}
               fullWidth
               name="type"
             >
-              <MenuItem value={"bank_account"}>Cuenta bancaria</MenuItem>
-              <MenuItem value={"pago_movil"}>Pago movil</MenuItem>
+              <MenuItem value={'bank_account'}>Cuenta bancaria</MenuItem>
+              <MenuItem value={'pago_movil'}>Pago movil</MenuItem>
             </Select>
             <FormHelperText error={true}>
               {errors.type?.message as React.ReactNode}
@@ -70,7 +69,7 @@ const RechargeForm = (props: IRechargeFormProps): JSX.Element => {
         </Grid>
         <Grid item xs={12}>
           <TextField
-            {...register("amount")}
+            {...register('amount')}
             error={!!errors.amount}
             helperText={errors?.amount?.message as React.ReactNode}
             fullWidth
@@ -79,7 +78,7 @@ const RechargeForm = (props: IRechargeFormProps): JSX.Element => {
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">$</InputAdornment>
-              ),
+              )
             }}
           />
         </Grid>
@@ -90,7 +89,7 @@ const RechargeForm = (props: IRechargeFormProps): JSX.Element => {
         </Grid>
       </Grid>
     </Box>
-  );
-};
+  )
+}
 
-export default RechargeForm;
+export default RechargeForm

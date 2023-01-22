@@ -1,5 +1,5 @@
-import { useAppDispatch, useAppSelector } from "@app/hooks";
-import * as yup from "yup";
+import { useAppDispatch, useAppSelector } from '@app/hooks'
+import * as yup from 'yup'
 import {
   ADDRESS_REQUIRED_YUP,
   BIRTH_DATE_REQUIRED_YUP,
@@ -10,28 +10,28 @@ import {
   MUNICIPALITY_REQUIRED_YUP,
   PARISH_REQUIRED_YUP,
   PHONE_REQUIRED_YUP,
-  STATE_REQUIRED_YUP,
-} from "@constants/yup.constants";
-import { Box } from "@mui/system";
+  STATE_REQUIRED_YUP
+} from '@constants/yup.constants'
+import { Box } from '@mui/system'
 import UserForm, {
-  IFormValueInterface,
-} from "@components/Forms/UserForm/UserForm";
-import { Button, Divider, Grid, LinearProgress } from "@mui/material";
+  IFormValueInterface
+} from '@components/Forms/UserForm/UserForm'
+import { Button, Divider, Grid, LinearProgress } from '@mui/material'
 import {
   updateProfileAction,
-  updateProfileType,
-} from "@features/user/userActions";
-import { useEffect, useState } from "react";
+  updateProfileType
+} from '@features/user/userActions'
+import { useEffect, useState } from 'react'
 import {
 
   swalError,
   swalLoading,
-  swalSuccess,
-} from "@utils/swal.util";
-import { isString } from "lodash";
-import { UpdateProfileInterface } from "@interfaces/forms/user.interface";
-import dayjs from "dayjs";
-import CloseReasonDialog from "@components/Forms/UserForm/CloseReasonDialog";
+  swalSuccess
+} from '@utils/swal.util'
+import { isString } from 'lodash'
+import { UpdateProfileInterface } from '@interfaces/forms/user.interface'
+import dayjs from 'dayjs'
+import CloseReasonDialog from '@components/Forms/UserForm/CloseReasonDialog'
 
 const schema = yup
   .object({
@@ -44,18 +44,18 @@ const schema = yup
     birthDate: yup.date().required(BIRTH_DATE_REQUIRED_YUP).nullable(),
     dni: yup.string().required(DNI_REQUIRED_YUP),
     phone: yup.string().required(PHONE_REQUIRED_YUP).nullable(),
-    address: yup.string().required(ADDRESS_REQUIRED_YUP),
+    address: yup.string().required(ADDRESS_REQUIRED_YUP)
   })
-  .required();
+  .required()
 
 const Profile = (): JSX.Element => {
   const { loading, error, success, userInfo, lastAction } = useAppSelector(
     (state) => state?.user
-  );
+  )
 
-  const [openCloseDialog, setOpenCloseDialog] = useState(false);
+  const [openCloseDialog, setOpenCloseDialog] = useState(false)
 
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
 
   const defaultValues = {
     firstName: userInfo?.firstName,
@@ -68,38 +68,38 @@ const Profile = (): JSX.Element => {
     state: userInfo?.parish
       ? {
           label: userInfo?.parish?.municipality?.state?.name,
-          value: userInfo?.parish?.municipality?.state?.id,
+          value: userInfo?.parish?.municipality?.state?.id
         }
       : null,
     municipality: userInfo?.parish
       ? {
           label: userInfo?.parish?.municipality?.name,
-          value: userInfo?.parish?.municipality?.id,
+          value: userInfo?.parish?.municipality?.id
         }
       : null,
     parish: userInfo?.parish
       ? { label: userInfo?.parish.name, value: userInfo?.parish.id }
-      : null,
-  };
+      : null
+  }
 
   useEffect(() => {
-    if (success && lastAction == updateProfileType) {
-      console.log("yes");
-      swalSuccess("Perfil actualizado correctamente");
+    if (success && lastAction === updateProfileType) {
+      console.log('yes')
+      swalSuccess('Perfil actualizado correctamente')
     }
-  }, [success, lastAction]);
+  }, [success, lastAction])
 
   useEffect(() => {
-    if (loading && lastAction == updateProfileType && !success) {
-      swalLoading();
+    if (loading && lastAction === updateProfileType && !success) {
+      swalLoading()
     }
-  }, [loading]);
+  }, [loading])
 
   useEffect(() => {
-    if (error && lastAction == updateProfileType && isString(error)) {
-      swalError(error);
+    if (error && lastAction === updateProfileType && isString(error)) {
+      swalError(error)
     }
-  }, [error]);
+  }, [error])
 
   const onSubmit = (data: IFormValueInterface) => {
     const httpParam: UpdateProfileInterface = {
@@ -108,31 +108,33 @@ const Profile = (): JSX.Element => {
       firstName: data.firstName,
       lastName: data.lastName,
       phone: data.phone,
-      address: data.address,
-    };
-    dispatch(updateProfileAction(httpParam));
-  };
+      address: data.address
+    }
+    dispatch(updateProfileAction(httpParam))
+  }
 
   const handleCloseDialog = () => {
-    setOpenCloseDialog(false);
-  };
+    setOpenCloseDialog(false)
+  }
 
   return (
     <Box>
-      {loading ? (
+      {loading
+        ? (
         <LinearProgress />
-      ) : (
+          )
+        : (
         <>
           <UserForm
             schema={schema}
             onSubmit={onSubmit}
             defaultValues={defaultValues}
             visibility={{
-              password: false,
+              password: false
             }}
             disabled={{
               email: true,
-              dni: true,
+              dni: true
             }}
             submitText="Guardar"
           />
@@ -141,11 +143,11 @@ const Profile = (): JSX.Element => {
               <Divider></Divider>
             </Grid>
             <Grid item xs={12}>
-              {userInfo.role == "user" && (
+              {userInfo.role === 'user' && (
                 <Button
                   className="text-center"
                   onClick={() => {
-                    setOpenCloseDialog(true);
+                    setOpenCloseDialog(true)
                   }}
                   type="button"
                   variant="contained"
@@ -164,8 +166,8 @@ const Profile = (): JSX.Element => {
             </Grid>
           </Grid>
         </>
-      )}
+          )}
     </Box>
-  );
-};
-export default Profile;
+  )
+}
+export default Profile

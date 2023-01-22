@@ -1,14 +1,14 @@
-import * as yup from "yup";
+import * as yup from 'yup'
 import {
-    BIRTH_DATE_REQUIRED_YUP,
-    DNI_REQUIRED_YUP,
-    EMAIL_REQUIRED_YUP,
-    FIRST_NAME_REQUIRED_YUP,
-    LAST_NAME_REQUIRED_YUP,
-    MUNICIPALITY_REQUIRED_YUP,
-    PARISH_REQUIRED_YUP,
-    STATE_REQUIRED_YUP,
-  } from "@constants/yup.constants";
+  BIRTH_DATE_REQUIRED_YUP,
+  DNI_REQUIRED_YUP,
+  EMAIL_REQUIRED_YUP,
+  FIRST_NAME_REQUIRED_YUP,
+  LAST_NAME_REQUIRED_YUP,
+  MUNICIPALITY_REQUIRED_YUP,
+  PARISH_REQUIRED_YUP,
+  STATE_REQUIRED_YUP
+} from '@constants/yup.constants'
 
 export const userSchema = yup
   .object({
@@ -23,4 +23,4 @@ export const userSchema = yup
     phone: yup.string().nullable(),
     address: yup.string().nullable()
   })
-  .required();
+  .required()

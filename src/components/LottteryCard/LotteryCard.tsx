@@ -1,20 +1,20 @@
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
+import Card from '@mui/material/Card'
+import CardActions from '@mui/material/CardActions'
+import CardContent from '@mui/material/CardContent'
+import CardMedia from '@mui/material/CardMedia'
+import Button from '@mui/material/Button'
+import Typography from '@mui/material/Typography'
 
 interface ComponentProps {
-  code: string;
-  littleAnimalName: string;
-  image: string;
+  code: string
+  littleAnimalName: string
+  image: string
 }
 
-export default function LotteryCard({
+export default function LotteryCard ({
   code,
   littleAnimalName,
-  image,
+  image
 }: ComponentProps) {
   return (
     <Card className="w-full">
@@ -43,5 +43,5 @@ export default function LotteryCard({
         <Button size="small">Ver mas</Button>
       </CardActions>
     </Card>
-  );
+  )
 }

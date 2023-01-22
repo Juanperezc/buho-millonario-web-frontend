@@ -1,49 +1,49 @@
-import Swal from "sweetalert2";
+import Swal from 'sweetalert2'
 
-export const swalLoading = (title: string = "Cargando...") => {
-  Swal.fire({
+export const swalLoading = (title: string = 'Cargando...') => {
+  void Swal.fire({
     title,
     allowOutsideClick: false,
     didOpen: () => {
-      Swal.showLoading(null);
-    },
-  });
-};
-
-export const swalClose = () => {
-  Swal.close();
-};
-
-export const swalError = (
-  title: string = "Ha ocurrido un error",
-  text?: string
-) => {
-  Swal.fire({
-    icon: "error",
-    title: title,
-    text: text ?? "",
-  });
-};
-
-export const swalQuestion = (
-  title: string = "¿Está seguro?",
-  text?: string
-) => {
-  return Swal.fire({
-    icon: "question",
-    title: title,
-    text: text ?? "",
-    showCancelButton: true,
-    confirmButtonText: "Aceptar",
-    cancelButtonText: "Cancelar",
-  });
+      Swal.showLoading(null)
+    }
+  })
 }
 
-export const swalSuccess = (title: string = "Éxito", text?: string) => {
-  Swal.fire({
-    icon: "success",
-    title: title,
-    text: text ?? "",
-    confirmButtonText: "Aceptar",
-  });
-};
+export const swalClose = () => {
+  Swal.close()
+}
+
+export const swalError = (
+  title: string = 'Ha ocurrido un error',
+  text?: string
+) => {
+  void Swal.fire({
+    icon: 'error',
+    title,
+    text: text ?? ''
+  })
+}
+
+export const swalQuestion = async (
+  title: string = '¿Está seguro?',
+  text?: string
+) => {
+  return await Swal.fire({
+    icon: 'question',
+    title,
+    text: text ?? '',
+    showCancelButton: true,
+    confirmButtonText: 'Aceptar',
+    cancelButtonText: 'Cancelar'
+  })
+}
+
+export const swalSuccess = (title: string = 'Éxito', text?: string) => {
+  void Swal.fire({
+    icon: 'success',
+    title,
+    text: text ?? '',
+    confirmButtonText: 'Aceptar'
+  })
+}

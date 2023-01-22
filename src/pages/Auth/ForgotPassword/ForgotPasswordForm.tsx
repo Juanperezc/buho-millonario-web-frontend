@@ -1,76 +1,76 @@
-import { useEffect } from "react";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { Copyright } from "@components/Copyright/Copyright";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
+import { useEffect } from 'react'
+import Button from '@mui/material/Button'
+import CssBaseline from '@mui/material/CssBaseline'
+import TextField from '@mui/material/TextField'
+import Link from '@mui/material/Link'
+import Grid from '@mui/material/Grid'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import Container from '@mui/material/Container'
+import { Copyright } from '@components/Copyright/Copyright'
+import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
 import {
-  EMAIL_REQUIRED_YUP,
-} from "shared/constants/yup.constants";
-import { swalError, swalLoading, swalSuccess } from "@utils/swal.util";
-import { useQuery } from "react-query";
-import { forgotPassword } from "@services/authService";
-import { Alert, Divider } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import { GENERIC_ERROR_MESSAGE } from "@constants/error.constants";
-import { SUCCESS_PASSWORD_FORGOT, SUCCESS_PASSWORD_RESET } from "@constants/success.constants";
+  EMAIL_REQUIRED_YUP
+} from 'shared/constants/yup.constants'
+import { swalError, swalLoading, swalSuccess } from '@utils/swal.util'
+import { useQuery } from 'react-query'
+import { forgotPassword } from '@services/authService'
+import { Alert, Divider } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
+import { GENERIC_ERROR_MESSAGE } from '@constants/error.constants'
+import { SUCCESS_PASSWORD_FORGOT } from '@constants/success.constants'
 
 interface IFormInputs {
-  email: string;
+  email: string
 }
 
 const schema = yup
   .object({
-    email: yup.string().required(EMAIL_REQUIRED_YUP),
+    email: yup.string().required(EMAIL_REQUIRED_YUP)
   })
-  .required();
+  .required()
 
-export default function ForgotPasswordForm() {
-  const navigate = useNavigate();
+export default function ForgotPasswordForm () {
+  const navigate = useNavigate()
   const {
     register,
     getValues,
     handleSubmit,
-    formState: { errors },
+    formState: { errors }
   } = useForm<IFormInputs>({
-    resolver: yupResolver(schema),
-  });
+    resolver: yupResolver(schema)
+  })
 
   const forgotPasswordQuery = useQuery(
-    "forgot-password",
-    () => forgotPassword(getValues()),
+    'forgot-password',
+    async () => await forgotPassword(getValues()),
     {
-      enabled: false,
+      enabled: false
     }
-  );
+  )
 
   const onSubmit = (data: IFormInputs) => {
-    forgotPasswordQuery.refetch();
-  };
+    void forgotPasswordQuery.refetch()
+  }
 
   useEffect(() => {
     if (forgotPasswordQuery.isSuccess) {
-      swalSuccess(SUCCESS_PASSWORD_FORGOT);
-      navigate("/sign-in");
+      swalSuccess(SUCCESS_PASSWORD_FORGOT)
+      navigate('/sign-in')
     }
-  }, [forgotPasswordQuery.isSuccess]);
+  }, [forgotPasswordQuery.isSuccess])
 
   useEffect(() => {
     if (forgotPasswordQuery.isError) {
-      swalError(GENERIC_ERROR_MESSAGE);
+      swalError(GENERIC_ERROR_MESSAGE)
     }
-  }, [forgotPasswordQuery.isError]);
+  }, [forgotPasswordQuery.isError])
 
   useEffect(() => {
-    if (forgotPasswordQuery.isLoading) swalLoading();
-  }, [forgotPasswordQuery.isLoading]);
+    if (forgotPasswordQuery.isLoading) swalLoading()
+  }, [forgotPasswordQuery.isLoading])
 
   return (
     <Container component="main" maxWidth="xs">
@@ -78,9 +78,9 @@ export default function ForgotPasswordForm() {
       <Box
         sx={{
           marginTop: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center'
         }}
       >
         <Typography component="h1" variant="h5">
@@ -93,9 +93,9 @@ export default function ForgotPasswordForm() {
           sx={{ mt: 1 }}
         >
           <TextField
-            {...register("email")}
+            {...register('email')}
             margin="normal"
-            error={errors.email ? true : false}
+            error={!!errors.email}
             helperText={errors.email?.message}
             required
             fullWidth
@@ -127,5 +127,5 @@ export default function ForgotPasswordForm() {
       </Box>
       <Copyright sx={{ mt: 8, mb: 4 }} />
     </Container>
-  );
+  )
 }

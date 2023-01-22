@@ -1,18 +1,18 @@
-import { Grid } from "@mui/material";
-import { swalClose, swalLoading } from "@utils/swal.util";
-import { Navigate } from "react-router-dom";
+import { Grid } from '@mui/material'
+import { swalClose, swalLoading } from '@utils/swal.util'
+import { Navigate } from 'react-router-dom'
 
 interface NoAuthLayoutProps {
-  children: JSX.Element;
-  userToken: string | null;
+  children: JSX.Element
+  userToken: string | null
 }
 const NoAuthLayout = ({ children, userToken }: NoAuthLayoutProps) => {
   if (userToken) {
-    swalLoading("Redireccionando...");
+    swalLoading('Redireccionando...')
     setTimeout(() => {
-      swalClose();
-    }, 1000);
-    return <Navigate to={"/dashboard/home"} replace />;
+      swalClose()
+    }, 1000)
+    return <Navigate to={'/dashboard/home'} replace />
   }
   return (
     <div className="bg-gradient-to-r from-secondary to-primary">
@@ -22,7 +22,7 @@ const NoAuthLayout = ({ children, userToken }: NoAuthLayoutProps) => {
         direction="column"
         alignItems="center"
         justifyContent="center"
-        style={{ minHeight: "100vh" }}
+        style={{ minHeight: '100vh' }}
       >
         <Grid item xs={3}>
           <div className="my-5">
@@ -32,7 +32,7 @@ const NoAuthLayout = ({ children, userToken }: NoAuthLayoutProps) => {
         </Grid>
       </Grid>
     </div>
-  );
-};
+  )
+}
 
-export default NoAuthLayout;
+export default NoAuthLayout

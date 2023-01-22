@@ -1,34 +1,31 @@
-import { useEffect } from "react";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { Copyright } from "@components/Copyright/Copyright";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
+import { useEffect } from 'react'
+import Button from '@mui/material/Button'
+import CssBaseline from '@mui/material/CssBaseline'
+import TextField from '@mui/material/TextField'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import Container from '@mui/material/Container'
+import { Copyright } from '@components/Copyright/Copyright'
+import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
 import {
   PASSWORD_CONFIRM_MATCH_YUP,
   PASSWORD_MAX_YUP,
   PASSWORD_MIN_YUP,
-  PASSWORD_REQUIRED_YUP,
-} from "shared/constants/yup.constants";
-import { swalError, swalLoading, swalSuccess } from "@utils/swal.util";
-import { useQuery } from "react-query";
-import { resetPassword } from "@services/authService";
-import { Alert, Divider } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import { GENERIC_ERROR_MESSAGE } from "@constants/error.constants";
-import { SUCCESS_PASSWORD_RESET } from "@constants/success.constants";
+  PASSWORD_REQUIRED_YUP
+} from 'shared/constants/yup.constants'
+import { swalError, swalLoading } from '@utils/swal.util'
+import { useQuery } from 'react-query'
+import { resetPassword } from '@services/authService'
+import { Alert } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
+import { GENERIC_ERROR_MESSAGE } from '@constants/error.constants'
 
 interface IFormInputs {
-  token: string;
-  password: string;
-  confirm_password: string;
+  token: string
+  password: string
+  confirm_password: string
 }
 
 const schema = yup
@@ -40,59 +37,59 @@ const schema = yup
       .max(16, PASSWORD_MAX_YUP),
     confirm_password: yup
       .string()
-      .oneOf([yup.ref("password"), null], PASSWORD_CONFIRM_MATCH_YUP),
-    token: yup.string().required("Token is required"),
+      .oneOf([yup.ref('password'), null], PASSWORD_CONFIRM_MATCH_YUP),
+    token: yup.string().required('Token is required')
   })
-  .required();
+  .required()
 
-export default function ResetPasswordForm() {
-  const navigate = useNavigate();
-  const urlParams = new URLSearchParams(window.location.search);
-  const token = urlParams.get("token");
+export default function ResetPasswordForm () {
+  const navigate = useNavigate()
+  const urlParams = new URLSearchParams(window.location.search)
+  const token = urlParams.get('token')
   const {
     register,
     getValues,
     setValue,
     handleSubmit,
-    formState: { errors },
+    formState: { errors }
   } = useForm<IFormInputs>({
-    resolver: yupResolver(schema),
-  });
+    resolver: yupResolver(schema)
+  })
 
   const resetPasswordQuery = useQuery(
-    "reset-password",
-    () => resetPassword(getValues()),
+    'reset-password',
+    async () => await resetPassword(getValues()),
     {
       enabled: false,
-      retry: 0,
+      retry: 0
     }
-  );
+  )
 
   useEffect(() => {
     if (token) {
-      setValue("token", token);
+      setValue('token', token)
     }
-  }, [token]);
+  }, [token])
 
   const onSubmit = () => {
-    resetPasswordQuery.refetch();
-  };
+    void resetPasswordQuery.refetch()
+  }
 
   useEffect(() => {
-    if (resetPasswordQuery.isSuccess) {    
-        navigate("/sign-in?reset=true");
+    if (resetPasswordQuery.isSuccess) {
+      navigate('/sign-in?reset=true')
     }
-  }, [resetPasswordQuery.isSuccess]);
+  }, [resetPasswordQuery.isSuccess])
 
   useEffect(() => {
     if (resetPasswordQuery.isError) {
-      swalError(GENERIC_ERROR_MESSAGE);
+      swalError(GENERIC_ERROR_MESSAGE)
     }
-  }, [resetPasswordQuery.isError]);
+  }, [resetPasswordQuery.isError])
 
   useEffect(() => {
-    if (resetPasswordQuery.isLoading) swalLoading();
-  }, [resetPasswordQuery.isLoading]);
+    if (resetPasswordQuery.isLoading) swalLoading()
+  }, [resetPasswordQuery.isLoading])
 
   return (
     <Container component="main" maxWidth="xs">
@@ -100,9 +97,9 @@ export default function ResetPasswordForm() {
       <Box
         sx={{
           marginTop: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center'
         }}
       >
         <Typography component="h1" variant="h5">
@@ -115,10 +112,10 @@ export default function ResetPasswordForm() {
           sx={{ mt: 1 }}
         >
           <TextField
-            {...register("password")}
+            {...register('password')}
             type="password"
             margin="normal"
-            error={errors.password ? true : false}
+            error={!!errors.password}
             helperText={errors.password?.message}
             required
             fullWidth
@@ -127,14 +124,14 @@ export default function ResetPasswordForm() {
             name="password"
             autoFocus
           />
-          <Alert severity={"info"} className="my-4">
+          <Alert severity={'info'} className="my-4">
             La contraseña debe tener entre 8 y 20 caracteres.
           </Alert>
           <TextField
-            {...register("confirm_password")}
+            {...register('confirm_password')}
             type="password"
             margin="normal"
-            error={errors.confirm_password ? true : false}
+            error={!!errors.confirm_password}
             helperText={errors.confirm_password?.message}
             required
             fullWidth
@@ -155,5 +152,5 @@ export default function ResetPasswordForm() {
       </Box>
       <Copyright sx={{ mt: 8, mb: 4 }} />
     </Container>
-  );
+  )
 }

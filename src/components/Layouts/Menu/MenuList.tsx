@@ -1,46 +1,46 @@
-import * as React from "react";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import PeopleIcon from "@mui/icons-material/People";
-import BarChartIcon from "@mui/icons-material/BarChart";
-import clsx from "clsx";
+import * as React from 'react'
+import ListItemButton from '@mui/material/ListItemButton'
+import ListItemIcon from '@mui/material/ListItemIcon'
+import ListItemText from '@mui/material/ListItemText'
+import DashboardIcon from '@mui/icons-material/Dashboard'
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
+import PeopleIcon from '@mui/icons-material/People'
+import BarChartIcon from '@mui/icons-material/BarChart'
+import clsx from 'clsx'
 
 interface MenuListPrimaryProps {
-  role: string;
-  open: boolean;
+  role: string
+  open: boolean
 }
 const MenuListPrimary = ({ role, open }: MenuListPrimaryProps) => {
-  const path = window.location.pathname;
+  const path = window.location.pathname
 
   const isPathName = (pathName: string) => {
-    return pathName === path;
-  };
+    return pathName === path
+  }
   return (
     <React.Fragment>
       <ListItemButton
         className={clsx(
-          isPathName("/dashboard/home") ? "bg-primary text-white" : null
+          isPathName('/dashboard/home') ? 'bg-primary text-white' : null
         )}
         href="/dashboard/home"
       >
         <ListItemIcon>
           <DashboardIcon
-            className={isPathName("/dashboard/home") ? "text-white" : ""}
+            className={isPathName('/dashboard/home') ? 'text-white' : ''}
           />
         </ListItemIcon>
         {open && <ListItemText primary="Inicio" />}
       </ListItemButton>
-      {role == "user" && (
+      {role === 'user' && (
         <>
           <ListItemButton>
             <ListItemIcon>
               <ShoppingCartIcon />
             </ListItemIcon>
             {open && (
-              <ListItemText sx={{ display: "none" }} primary="Ver Sorteos" />
+              <ListItemText sx={{ display: 'none' }} primary="Ver Sorteos" />
             )}
           </ListItemButton>
           <ListItemButton>
@@ -53,23 +53,23 @@ const MenuListPrimary = ({ role, open }: MenuListPrimaryProps) => {
               <PeopleIcon />
             </ListItemIcon>
             {open && (
-              <ListItemText sx={{ display: "none" }} primary="Mis tickets" />
+              <ListItemText sx={{ display: 'none' }} primary="Mis tickets" />
             )}
           </ListItemButton>
         </>
       )}
-      {role == "admin" && (
+      {role === 'admin' && (
         <>
           <ListItemButton
             className={clsx(
-              isPathName("/dashboard/lotteries")
-                ? "bg-primary text-white"
+              isPathName('/dashboard/lotteries')
+                ? 'bg-primary text-white'
                 : null
             )}
             href="/dashboard/lotteries"
           >
             <ListItemIcon
-              className={isPathName("/dashboard/lotteries") ? "text-white" : ""}
+              className={isPathName('/dashboard/lotteries') ? 'text-white' : ''}
             >
               <PeopleIcon />
             </ListItemIcon>
@@ -81,13 +81,13 @@ const MenuListPrimary = ({ role, open }: MenuListPrimaryProps) => {
           </ListItemButton>
           <ListItemButton
             className={clsx(
-              isPathName("/dashboard/users") ? "bg-primary text-white" : null
+              isPathName('/dashboard/users') ? 'bg-primary text-white' : null
             )}
             href="/dashboard/users"
           >
             <ListItemIcon>
               <PeopleIcon
-                className={isPathName("/dashboard/users") ? "text-white" : ""}
+                className={isPathName('/dashboard/users') ? 'text-white' : ''}
               />
             </ListItemIcon>
             {open && <ListItemText primary="Gestión de apostadores" />}
@@ -101,10 +101,10 @@ const MenuListPrimary = ({ role, open }: MenuListPrimaryProps) => {
         </>
       )}
     </React.Fragment>
-  );
-};
+  )
+}
 
-export default MenuListPrimary;
+export default MenuListPrimary
 /* export const MenuListSecondary = (
   <React.Fragment>
     <ListSubheader component="div" inset>
