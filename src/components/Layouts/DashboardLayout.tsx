@@ -17,7 +17,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { Copyright } from "@components/Copyright/Copyright";
 import LogoutOption from "./ToolbarHeader/LogoutOption";
 import { Navigate } from "react-router-dom";
-import { Card, CardContent, CardHeader } from "@mui/material";
+import { Button, Card, CardContent, CardHeader } from "@mui/material";
 import { useAppSelector } from "@app/hooks";
 import MenuListPrimary from "./Menu/MenuList";
 
@@ -116,13 +116,20 @@ export default function DashboardLayout({
           </IconButton>
           <Typography
             component="h1"
+            className="sm:text-xl text-sm font-bold"
             variant="h6"
             color="inherit"
             noWrap
             sx={{ flexGrow: 1 }}
+       
           >
-            Saldo: 0.00 Bs
+            Saldo: {userInfo?.budget} Bs
+            <Button href="/dashboard/recharge/create" variant="contained" className="bg-green-800 ml-3">
+              {" "}
+              Recargar
+            </Button>
           </Typography>
+
           <LogoutOption />
         </Toolbar>
       </AppBar>

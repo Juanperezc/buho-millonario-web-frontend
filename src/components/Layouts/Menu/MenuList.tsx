@@ -47,7 +47,6 @@ const MenuListPrimary = ({ role, open }: MenuListPrimaryProps) => {
             <ListItemIcon>
               <PeopleIcon />
             </ListItemIcon>
-            {open && <ListItemText primary="Recargar saldo" />}
           </ListItemButton>
           <ListItemButton href="/dashboard/tickets">
             <ListItemIcon>

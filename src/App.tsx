@@ -28,6 +28,7 @@ import Lotteries from "@pages/Dashboard/Lotteries/Lotteries";
 import ShowLottery from "@pages/Dashboard/Lotteries/ShowLottery";
 import EditLottery from "@pages/Dashboard/Lotteries/EditLottery";
 import CreateLottery from "@pages/Dashboard/Lotteries/CreateLottery";
+import CreateRecharge from "@pages/Dashboard/Recharge/CreateRecharge";
 
 function App() {
   const queryClient = new QueryClient();
@@ -131,11 +132,21 @@ function App() {
             </DashboardLayout>
           ),
         },
-        
+        {
+          path: "recharge/create",
+          element: (
+            <DashboardLayout title="Hacer una recarga" userToken={userToken}>
+              <CreateRecharge />
+            </DashboardLayout>
+          ),
+        },
         {
           path: "users",
           element: (
-            <DashboardLayout title="Gestionar apostadores" userToken={userToken}>
+            <DashboardLayout
+              title="Gestionar apostadores"
+              userToken={userToken}
+            >
               <Users />
             </DashboardLayout>
           ),

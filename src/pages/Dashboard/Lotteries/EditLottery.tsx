@@ -1,6 +1,6 @@
 import LotteryForm, {
   ILotteryFormValueInterface,
-} from "@components/Forms/UserForm/LotteryForm";
+} from "@components/Forms/Lottery/LotteryForm";
 import { LotteryInterface } from "@interfaces/axios/lottery.interface";
 import { LinearProgress } from "@mui/material";
 import lotterySchema from "@schemas/lottery.schema";

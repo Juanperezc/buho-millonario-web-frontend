@@ -1,6 +1,6 @@
 import LotteryForm, {
   ILotteryFormValueInterface,
-} from "@components/Forms/UserForm/LotteryForm";
+} from "@components/Forms/Lottery/LotteryForm";
 import lotterySchema from "@schemas/lottery.schema";
 import { createLottery } from "@services/lotteryService";
 import { swalError, swalLoading, swalSuccess } from "@utils/swal.util";

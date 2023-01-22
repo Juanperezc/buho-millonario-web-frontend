@@ -1,4 +1,4 @@
-import { ILotteryFormValueInterface } from "@components/Forms/UserForm/LotteryForm";
+import { ILotteryFormValueInterface } from "@components/Forms/Lottery/LotteryForm";
 import { LotteryInterface } from "@interfaces/axios/lottery.interface";
 import { axiosInstance } from "config/http";
 
