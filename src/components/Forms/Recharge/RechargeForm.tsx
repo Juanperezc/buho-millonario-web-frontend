@@ -1,95 +1,110 @@
-import { yupResolver } from '@hookform/resolvers/yup'
 import {
   Button,
   Grid,
   InputAdornment,
   TextField,
-  Select,
-  FormControl,
-  InputLabel,
-  FormHelperText,
-  MenuItem
+  FormControl
 } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import Box from '@mui/material/Box'
+import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from 'yup'
-import React from 'react'
+import React, { useImperativeHandle, forwardRef } from 'react'
+import AutocompleteHookForm from '@components/HookForm/Autocomplete'
 
 const rechargeSchema = Yup.object().shape({
-  type: Yup.string().required('Selecciona el tipo de cuenta'),
+  type: Yup.mixed().required('Selecciona el tipo de cuenta'),
   amount: Yup.number()
     .required('Ingresa el monto de la recarga')
-    .positive()
-    .integer()
+    .positive('Ingresa un monto positivo')
+    .integer('Ingresa un monto entero')
 })
 
 export interface IRechargeFormValue {
-  type: string
+  type: string | any
   amount: number
+  reference_text?: string
 }
 
 interface IRechargeFormProps {
   onSubmit: (data: IRechargeFormValue) => void
 }
 
-const RechargeForm = (props: IRechargeFormProps): JSX.Element => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors }
-  } = useForm({
-    resolver: yupResolver(rechargeSchema)
-  })
+const RechargeForm = forwardRef(
+  (props: IRechargeFormProps, ref): JSX.Element => {
+    const {
+      reset,
+      control,
+      register,
+      handleSubmit,
+      formState: { errors }
+    } = useForm({
+      defaultValues: {
+        type: '',
+        amount: null
+      },
+      resolver: yupResolver(rechargeSchema)
+    })
 
-  const onSubmit = (data: IRechargeFormValue | any) => {
-    props.onSubmit(data)
-  }
+    const onSubmit = (data: IRechargeFormValue | any) => {
+      props.onSubmit(data)
+    }
 
-  return (
-    <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)}>
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">
-              Tipo de cuenta
-            </InputLabel>
-            <Select
-              {...register('type')}
-              error={!!errors.type}
+    useImperativeHandle(
+      ref,
+      () => ({
+        handleReset () {
+          console.log('reset')
+          reset()
+        }
+      }),
+      []
+    )
+
+    return (
+      <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)}>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <FormControl fullWidth>
+              <AutocompleteHookForm
+              loading={false}
+                control={control}
+                register={register('type')}
+                name="type"
+                label="Cuenta"
+                options={[
+                  { label: 'Provincial', value: 'provincial' },
+                  { label: 'Mercantil', value: 'mercantil' }
+                ]}
+                errors={errors}
+              />
+            </FormControl>
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              {...register('amount')}
+              error={!!errors.amount}
+              helperText={errors?.amount?.message as React.ReactNode}
               fullWidth
-              name="type"
-            >
-              <MenuItem value={'bank_account'}>Cuenta bancaria</MenuItem>
-              <MenuItem value={'pago_movil'}>Pago movil</MenuItem>
-            </Select>
-            <FormHelperText error={true}>
-              {errors.type?.message as React.ReactNode}
-            </FormHelperText>
-          </FormControl>
+              name="amount"
+              type={'text'}
+              label="Monto de la recarga"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">BsS</InputAdornment>
+                )
+              }}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Button type="submit" variant="contained" color="primary">
+              Hacer una recarga
+            </Button>
+          </Grid>
         </Grid>
-        <Grid item xs={12}>
-          <TextField
-            {...register('amount')}
-            error={!!errors.amount}
-            helperText={errors?.amount?.message as React.ReactNode}
-            fullWidth
-            name="amount"
-            label="Monto de la recarga"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">$</InputAdornment>
-              )
-            }}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <Button type="submit" variant="contained" color="primary">
-            Hacer una recarga
-          </Button>
-        </Grid>
-      </Grid>
-    </Box>
-  )
-}
+      </Box>
+    )
+  }
+)
 
 export default RechargeForm

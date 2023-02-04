@@ -34,6 +34,9 @@ const ShowLottery: React.FC = () => {
   }, [id])
   const lottery = data?.data as unknown as LotteryInterface
 
+  const handleOnBuyTicket = () => {
+    window.location.href = `/dashboard/tickets/buy/${id}`
+  }
   if (status === 'loading' || lottery === undefined) {
     return <LinearProgress />
   } else {
@@ -59,7 +62,7 @@ const ShowLottery: React.FC = () => {
                   </Grid>
                   <Grid item xs={12}>
                     <Typography variant="subtitle2" className="text-gray-600">
-                      Precio del ticket: ${lottery.ticketPrice}
+                      Precio del ticket: {lottery.ticketPrice} BsS
                     </Typography>
                   </Grid>
                   <Grid item xs={12}>
@@ -77,36 +80,36 @@ const ShowLottery: React.FC = () => {
                         <span className="text-lg text-indigo-500 font-medium">
                           <MonetizationOnIcon />
                         </span>
-                        <span>Premio 1: {lottery.reward1Digits}</span>
+                        <span>Premio 1: {lottery.reward1Digits} % de lo recaudado</span>
                       </li>
                       <li className="my-2">
                         <span className="text-lg text-indigo-500 font-medium">
                           <MonetizationOnIcon />
                         </span>
-                        <span>Premio 2: {lottery.reward2Digits}</span>
+                        <span>Premio 2: {lottery.reward2Digits} % de lo recaudado</span>
                       </li>
                       <li className="my-2">
                         <span className="text-lg text-indigo-500 font-medium">
                           <MonetizationOnIcon />
                         </span>
-                        <span>Premio 3: {lottery.reward3Digits}</span>
+                        <span>Premio 3: {lottery.reward3Digits} % de lo recaudado</span>
                       </li>
                       <li className="my-2">
                         <span className="text-lg text-indigo-500 font-medium">
                           <MonetizationOnIcon />
                         </span>
-                        <span>Premio 4: {lottery.reward4Digits}</span>
+                        <span>Premio 4: {lottery.reward4Digits} % de lo recaudado</span>
                       </li>
                       <li className="my-2">
                         <span className="text-lg text-indigo-500 font-medium">
                           <MonetizationOnIcon />
                         </span>
-                        <span>Premio 5: {lottery.reward5Digits}</span>
+                        <span>Premio 5: {lottery.reward5Digits} % de lo recaudado</span>
                       </li>
                     </ul>
                   </Grid>
                   <Grid item xs={12} className="text-center my-4">
-                    <Button variant="contained" color="primary">
+                    <Button onClick={handleOnBuyTicket} variant="contained" color="primary">
                       Comprar ticket
                     </Button>
                   </Grid>

@@ -138,7 +138,7 @@ const LotteryForm = (props: LotteryFormInterface): JSX.Element => {
             id="ticketPrice"
             InputProps={{
               startAdornment: (
-                <InputAdornment position="start">$</InputAdornment>
+                <InputAdornment position="start">BsS</InputAdornment>
               )
             }}
           />

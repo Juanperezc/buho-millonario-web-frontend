@@ -27,6 +27,7 @@ export default function AutocompleteHookForm (props: ComponentInterface) {
       render={({ field: { onChange, value } }) => (
         <Autocomplete
           disabled={props.disabled}
+          autoComplete={false}
           noOptionsText={'Sin resultados'}
           disableClearable
           loading={props.loading}
@@ -42,12 +43,13 @@ export default function AutocompleteHookForm (props: ComponentInterface) {
           renderInput={(params) => (
             <TextField
               {...params}
+              type="search"
               error={!!props.errors[props.name]}
               helperText={props.errors[props.name]?.message as string}
               label={props.label}
               InputProps={{
                 ...params.InputProps,
-                autoComplete: 'off',
+                autoComplete: 'new-password',
                 endAdornment: (
                   <Fragment>
                     {props.loading && (

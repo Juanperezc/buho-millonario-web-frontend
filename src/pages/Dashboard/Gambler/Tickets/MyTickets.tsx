@@ -20,6 +20,7 @@ const MyTickets = () => {
         {queryTickets.data?.data.map((ticket, i) => (
           <Grid key={i} className="px-4 py-3" item xs={12} sm={6}>
             <TicketComponent
+            price={ticket.amount}
               code={ticket.code}
               image={ticket.littleAnimal.image}
               littleAnimalName={ticket.littleAnimal.name}

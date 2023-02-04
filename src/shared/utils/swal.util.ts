@@ -5,7 +5,7 @@ export const swalLoading = (title: string = 'Cargando...') => {
     title,
     allowOutsideClick: false,
     didOpen: () => {
-      Swal.showLoading(null)
+      Swal.showLoading()
     }
   })
 }

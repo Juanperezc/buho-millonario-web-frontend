@@ -23,6 +23,13 @@ export const REWARD_5_DIGIT_REQUIRED_YUP = 'El premio para 5 dígitos es requeri
 export const START_DATE_REQUIRED_YUP = 'La fecha de inicio es requerida'
 export const FINISH_DATE_REQUIRED_YUP = 'La fecha de finalización es requerida'
 export const FINISH_DATE_MIN_STARTED = 'La fecha de finalización debe ser mayor a la de inicio'
+
+// ticket
+export const TICKET_CODE_REQUIRED_YUP = 'El código del ticket es requerido'
+export const TICKET_DIGITS_YUP = 'El código del ticket debe tener 5 dígitos'
+export const TICKET_LITTLE_ANIMAL_REQUIRED_YUP = 'El Animalito es requerido'
+export const TICKET_IS_RANDOM_REQUIRED_YUP = 'El tipo de ticket es requerido'
+
 // generic
 // min max
 export const PASSWORD_MIN_YUP = 'Contraseña debe tener al menos 8 caracteres'

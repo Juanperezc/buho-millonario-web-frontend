@@ -114,6 +114,7 @@ export default function DashboardLayout ({
           >
             <MenuIcon />
           </IconButton>
+
           <Typography
             component="h1"
             className="sm:text-xl text-sm font-bold"
@@ -121,13 +122,20 @@ export default function DashboardLayout ({
             color="inherit"
             noWrap
             sx={{ flexGrow: 1 }}
-
           >
-            Saldo: {userInfo?.budget} Bs
-            <Button href="/dashboard/recharge/create" variant="contained" className="bg-green-800 ml-3">
-              {' '}
-              Recargar
-            </Button>
+            {userInfo?.role === 'user' && (
+              <>
+                Saldo: {userInfo?.budget} BsS
+                <Button
+                  href="/dashboard/recharge/create"
+                  variant="contained"
+                  className="bg-green-800 ml-3"
+                >
+                  {' '}
+                  Recargar
+                </Button>
+              </>
+            )}
           </Typography>
 
           <LogoutOption />

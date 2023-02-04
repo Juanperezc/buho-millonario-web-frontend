@@ -25,3 +25,7 @@
 .my-2 span {
     margin-right: 1rem;
 }
+
+.swal2-container {
+  z-index: 10000;
+}

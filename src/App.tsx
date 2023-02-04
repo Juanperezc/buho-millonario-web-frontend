@@ -15,20 +15,22 @@ import {
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import Profile from '@pages/Dashboard/Profile'
-import MyTickets from '@pages/Dashboard/MyTickets'
+import MyTickets from '@pages/Dashboard/Gambler/Tickets/MyTickets'
 import { ThemeProvider } from '@emotion/react'
 import theme from './theme'
 import ForgotPassword from '@pages/Auth/ForgotPassword/ForgotPassword'
 import ResetPassword from '@pages/Auth/ResetPassword/ResetPassword'
 import SignUp from '@pages/Auth/SignUp/SignUp'
-import Users from '@pages/Dashboard/Users/Users'
-import EditUser from '@pages/Dashboard/Users/EditUser'
-import ShowUser from '@pages/Dashboard/Users/ShowUser'
-import Lotteries from '@pages/Dashboard/Lotteries/Lotteries'
-import ShowLottery from '@pages/Dashboard/Lotteries/ShowLottery'
-import EditLottery from '@pages/Dashboard/Lotteries/EditLottery'
-import CreateLottery from '@pages/Dashboard/Lotteries/CreateLottery'
+import Users from '@pages/Dashboard/Admin/Users/Users'
+import EditUser from '@pages/Dashboard/Admin/Users/EditUser'
+import ShowUser from '@pages/Dashboard/Admin/Users/ShowUser'
+import Lotteries from '@pages/Dashboard/Admin/Lotteries/Lotteries'
+import ShowLottery from '@pages/Dashboard/Common/Lotteries/ShowLottery'
+import EditLottery from '@pages/Dashboard/Admin/Lotteries/EditLottery'
+import CreateLottery from '@pages/Dashboard/Admin/Lotteries/CreateLottery'
 import CreateRecharge from '@pages/Dashboard/Recharge/CreateRecharge'
+import GamblerLotteries from '@pages/Dashboard/Gambler/Lotteries/Lotteries'
+import { BuyTicket } from '@pages/Dashboard/Gambler/Tickets/BuyTicket/BuyTicket'
 
 function App () {
   const queryClient = new QueryClient()
@@ -102,6 +104,14 @@ function App () {
           )
         },
         {
+          path: 'gambler-lotteries',
+          element: (
+            <DashboardLayout title="Ver Sorteos" userToken={userToken}>
+              <GamblerLotteries />
+            </DashboardLayout>
+          )
+        },
+        {
           path: 'lotteries',
           element: (
             <DashboardLayout title="Gestionar Sorteos" userToken={userToken}>
@@ -109,6 +119,7 @@ function App () {
             </DashboardLayout>
           )
         },
+
         {
           path: 'lotteries/create',
           element: (
@@ -173,6 +184,14 @@ function App () {
           element: (
             <DashboardLayout title="Mis tickets" userToken={userToken}>
               <MyTickets />
+            </DashboardLayout>
+          )
+        },
+        {
+          path: 'tickets/buy/:id',
+          element: (
+            <DashboardLayout title="Comprar ticket" userToken={userToken}>
+              <BuyTicket />
             </DashboardLayout>
           )
         }

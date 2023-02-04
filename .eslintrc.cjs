@@ -24,6 +24,7 @@ module.exports = {
     '@typescript-eslint/strict-boolean-expressions': 'off',
     '@typescript-eslint/restrict-template-expressions': 'off',
     '@typescript-eslint/no-misused-promises': 'off',
+    'react/display-name': 'off',
     'react/react-in-jsx-scope': 'off'
   }
 }

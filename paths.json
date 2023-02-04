@@ -8,8 +8,8 @@
       "@features/*": ["features/*"],
       "@interfaces/*": ["shared/interfaces/*"],
       "@schemas/*": ["shared/schemas/*"],
-      "@utils/*": ["shared/utils/*"],
       "@services/*": ["services/*"],
+      "@utils/*": ["shared/utils/*"],
       "@constants/*": ["shared/constants/*"]
     }
   }
