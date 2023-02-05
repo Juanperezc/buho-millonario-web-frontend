@@ -15,8 +15,10 @@ import {
 import { Box } from '@mui/system'
 import { useParams } from 'react-router-dom'
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn'
+import { useAppSelector } from '@app/hooks'
 
 const ShowLottery: React.FC = () => {
+  const { userInfo } = useAppSelector((state) => state.user)
   const { id } = useParams<{ id: string }>()
 
   const { data, status, refetch } = useQuery(
@@ -108,11 +110,11 @@ const ShowLottery: React.FC = () => {
                       </li>
                     </ul>
                   </Grid>
-                  <Grid item xs={12} className="text-center my-4">
+                  {userInfo.role === 'user' && (<Grid item xs={12} className="text-center my-4">
                     <Button onClick={handleOnBuyTicket} variant="contained" color="primary">
                       Comprar ticket
                     </Button>
-                  </Grid>
+                  </Grid>)}
                 </Grid>
               </CardContent>
             </Card>
